@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("Effortless.Net.Encryption")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Effortless .Net Encryption is a library that provides: Rijndael encryption/decyption, Hashing and Digest creation/validation and Password/salt creation.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Simon Hughes")]
 [assembly: AssemblyProduct("Effortless.Net.Encryption")]
