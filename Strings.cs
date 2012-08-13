@@ -1,10 +1,8 @@
 namespace Effortless.Net.Encryption
 {
     using System;
-    using System.Globalization;
     using System.Security.Cryptography;
     using System.Text;
-    using System.Text.RegularExpressions;
 
     public static class Strings
     {
