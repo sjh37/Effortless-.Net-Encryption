@@ -65,6 +65,11 @@ namespace Effortless.Net.Encryption
             }
         }
 
+        public static bool Verify(HashType hashType, string data, string sharedKey, bool showBytes, string hash)
+        {
+            return hash == Create(hashType, data, sharedKey, showBytes);
+        }
+ 
         private static string HashData(HashAlgorithm hashAlgorithm, string data, string sharedKey, bool showBytes)
         {
             if(hashAlgorithm == null) throw new ArgumentNullException("hashAlgorithm");
@@ -75,10 +80,5 @@ namespace Effortless.Net.Encryption
             var result = hashAlgorithm.ComputeHash(input);
             return showBytes ? BitConverter.ToString(result).Replace("-", string.Empty) : Convert.ToBase64String(result);
         }
-
-        public static bool Verify(HashType hashType, string data, string sharedKey, bool showBytes, string hash)
-        {
-            return hash == Create(hashType, data, sharedKey, showBytes);
-        }
-    }
+   }
 }
