@@ -56,3 +56,4 @@ PrecompiledWeb
 svnignore[.-]
 UpgradeLog*.*
 Nuget.Version.cs
+*.nupkg
