@@ -9,9 +9,9 @@ namespace Effortless.Net.Encryption
     public static class Strings
     {
         /// <summary>
-        /// Encrypt a string.
+        /// Encrypts a string.
         /// </summary>
-        /// <param name="clearString">The original string.</param>
+        /// <param name="clearString">The plain text string.</param>
         /// <param name="key">Key</param>
         /// <param name="iv">IV</param>
         /// <returns>The encrypted string.</returns>
@@ -29,9 +29,9 @@ namespace Effortless.Net.Encryption
         }
 
         /// <summary>
-        /// Encrypt a string.
+        /// Encrypts a string.
         /// </summary>
-        /// <param name="clearString">The original string.</param>
+        /// <param name="clearString">The plain text string.</param>
         /// <param name="password">Password to create key with</param>
         /// <param name="salt">Salt to create key with</param>
         /// <param name="iv">IV</param>
@@ -50,9 +50,9 @@ namespace Effortless.Net.Encryption
         }
 
         /// <summary>
-        /// Decrypt a string.
+        /// Decrypts a string.
         /// </summary>
-        /// <param name="cipherString">The crypted string.</param>
+        /// <param name="cipherString">The encrypted string.</param>
         /// <param name="key">Key</param>
         /// <param name="iv">IV</param>
         /// <returns>The decrypted string.</returns>
@@ -69,9 +69,9 @@ namespace Effortless.Net.Encryption
         }
 
         /// <summary>
-        /// Decrypt a string.
+        /// Decrypts a string.
         /// </summary>
-        /// <param name="cipherString">The crypted string.</param>
+        /// <param name="cipherString">The encrypted string.</param>
         /// <param name="password">Password to create key with</param>
         /// <param name="salt">Salt to create key with</param>
         /// <param name="iv">IV</param>
@@ -89,6 +89,11 @@ namespace Effortless.Net.Encryption
             return Decrypt(cipherString, keyBytes, ivBytes);
         }
 
+        /// <summary>
+        /// Create a salt.
+        /// </summary>
+        /// <param name="size">The number of bytes the salt is required to be. This is then converted into a base64 string. The resulting string length can be larger than size.</param>
+        /// <returns>A salt</returns>
         public static string CreateSaltFull(int size)
         {
             if(size < 1)
@@ -99,6 +104,11 @@ namespace Effortless.Net.Encryption
             return Convert.ToBase64String(buff);
         }
 
+        /// <summary>
+        /// Create a salt of exactly the number of characters required.
+        /// </summary>
+        /// <param name="size">The number of characters required in the salt</param>
+        /// <returns>A salt</returns>
         public static string CreateSalt(int size)
         {
             if(size < 1)
@@ -107,6 +117,13 @@ namespace Effortless.Net.Encryption
             return CreateSaltFull(size).Substring(0, size);
         }
 
+        /// <summary>
+        /// Creates a password with the required length. You can specify if you want to allow punctuation characters in the retuned password.
+        /// For more information on punctuation characters, see http://msdn.microsoft.com/en-us/library/6w3ahtyy.aspx
+        /// </summary>
+        /// <param name="size">The number of characters in the returned password</param>
+        /// <param name="allowPunctuation">If true allows letters, digits and puctuation. If false only allows letters and digits.</param>
+        /// <returns>Password</returns>
         public static string CreatePassword(int size, bool allowPunctuation)
         {
             if(size < 1)
@@ -141,13 +158,13 @@ namespace Effortless.Net.Encryption
         /// Converts the Hex string to a byte array
         /// </summary>
         /// <param name="key">Must be an even number of characters</param>
-        /// <returns></returns>
+        /// <returns>Resulting byte[] array</returns>
         static public byte[] StringToHex(string key)
         {
             if(string.IsNullOrEmpty(key))
                 throw new ArgumentNullException("key");
 
-            var hex = new Regex("^([A-Fa-f0-9]{2}){8,9}$");	// This is nice because it generalizes to any even-length string.
+            var hex = new Regex("^([A-Fa-f0-9]{2}){8,9}$");
             if(!hex.IsMatch(key))
                 throw new ArgumentException("Must be hexadecimal.", "key");
 
