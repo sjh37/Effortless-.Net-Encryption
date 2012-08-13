@@ -38,6 +38,12 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Effortless.Net.Encryption.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
@@ -47,15 +53,15 @@
     <Compile Include="Hash.cs" />
     <Compile Include="Strings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Effortless.Net.Encryption.pfx" />
     <None Include="Properties\VersionInfo.base.cs" />
     <Compile Include="Properties\VersionInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-    <UsingTask TaskName="HgVersionFile" AssemblyFile="ThirdParty\MSBuildVersioning.dll" />
-    <Target Name="BeforeBuild">
-        <HgVersionFile TemplateFile="Properties\VersionInfo.base.cs"
-            DestinationFile="Properties\VersionInfo.cs" />
-    </Target>
-    <Target Name="AfterBuild">
-    </Target>
+  <UsingTask TaskName="HgVersionFile" AssemblyFile="ThirdParty\MSBuildVersioning.dll" />
+  <Target Name="BeforeBuild">
+    <HgVersionFile TemplateFile="Properties\VersionInfo.base.cs" DestinationFile="Properties\VersionInfo.cs" />
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
 </Project>
