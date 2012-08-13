@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("Effortless.Net.Encryption.Test")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Effortless .Net Encryption is a library that provides: Rijndael encryption/decyption, Hashing and Digest creation/validation and Password/salt creation.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Simon Hughes, www.hicrest.net")]
 [assembly: AssemblyProduct("Effortless.Net.Encryption.Test")]
-[assembly: AssemblyCopyright("Copyright © Simon Hughes 2008")]
+[assembly: AssemblyCopyright("Copyright © Simon Hughes 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

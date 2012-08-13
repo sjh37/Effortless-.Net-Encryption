@@ -47,6 +47,7 @@ _UpgradeReport_Files
 _vti_*
 Ankh.Load
 AssemblyInfo.Version.cs
+VersionInfo.cs
 Backup*
 BuildSource.txt
 CVS

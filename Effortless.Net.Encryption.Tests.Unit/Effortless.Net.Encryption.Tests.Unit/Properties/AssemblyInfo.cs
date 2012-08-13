@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Effortless.Net.Encryption.Tests.Unit")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Effortless .Net Encryption is a library that provides: Rijndael encryption/decyption, Hashing and Digest creation/validation and Password/salt creation.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Simon Hughes, www.hicrest.net")]
 [assembly: AssemblyProduct("Effortless.Net.Encryption.Tests.Unit")]
-[assembly: AssemblyCopyright("Copyright ©  2012")]
+[assembly: AssemblyCopyright("Copyright © Simon Hughes 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
