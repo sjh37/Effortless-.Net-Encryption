@@ -732,47 +732,6 @@ namespace Effortless.Net.Encryption
             s = this.CreatePassword(0, false);
         }
 
-        [PexMethod]
-        public byte[] StringToHex(string key)
-        {
-            byte[] result = Strings.StringToHex(key);
-            return result;
-            // TODO: add assertions to method StringsTest.StringToHex(String)
-        }
-
-        [TestMethod]
-        public void StringToHex75()
-        {
-            byte[] bs;
-            bs = this.StringToHex(new string('0', 16));
-            Assert.IsNotNull((object)bs);
-            Assert.AreEqual<int>(8, (int)(bs.Length));
-            Assert.AreEqual<byte>((byte)0, bs[0]);
-            Assert.AreEqual<byte>((byte)0, bs[1]);
-            Assert.AreEqual<byte>((byte)0, bs[2]);
-            Assert.AreEqual<byte>((byte)0, bs[3]);
-            Assert.AreEqual<byte>((byte)0, bs[4]);
-            Assert.AreEqual<byte>((byte)0, bs[5]);
-            Assert.AreEqual<byte>((byte)0, bs[6]);
-            Assert.AreEqual<byte>((byte)0, bs[7]);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void StringToHexThrowsArgumentException58()
-        {
-            byte[] bs;
-            bs = this.StringToHex("\0");
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void StringToHexThrowsArgumentNullException169()
-        {
-            byte[] bs;
-            bs = this.StringToHex((string)null);
-        }
-
         [TestMethod]
         [ExpectedException(typeof(CryptographicException))]
         public void EncryptThrowsCryptographicException170()

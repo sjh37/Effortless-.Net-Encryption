@@ -153,27 +153,5 @@ namespace Effortless.Net.Encryption
             }
             return s.ToString();
         }
-
-        /// <summary>
-        /// Converts the Hex string to a byte array
-        /// </summary>
-        /// <param name="key">Must be an even number of characters</param>
-        /// <returns>Resulting byte[] array</returns>
-        static public byte[] StringToHex(string key)
-        {
-            if(string.IsNullOrEmpty(key))
-                throw new ArgumentNullException("key");
-
-            var hex = new Regex("^([A-Fa-f0-9]{2}){8,9}$");
-            if(!hex.IsMatch(key))
-                throw new ArgumentException("Must be hexadecimal.", "key");
-
-            var result = new byte[key.Length / 2];
-            for(int index = 0; index < key.Length; index += 2)
-            {
-                result[index / 2] = Byte.Parse(key.Substring(index, 2), NumberStyles.AllowHexSpecifier);
-            }
-            return result;
-        }
     }
 }
