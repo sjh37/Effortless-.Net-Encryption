@@ -90,29 +90,30 @@ namespace Effortless.Net.Encryption
         /// <summary>
         /// Create a salt.
         /// </summary>
-        /// <param name="size">The number of bytes the salt is required to be. This is then converted into a base64 string. The resulting string length can be larger than size.</param>
+        /// <param name="numBytes">The number of bytes the salt is required to be, which is then converted into a base-64 string. The resulting string length can be larger than numBytes.</param>
         /// <returns>A salt</returns>
-        public static string CreateSaltFull(int size)
+        public static string CreateSaltFull(int numBytes)
         {
-            if(size < 1)
-                throw new ArgumentException("size");
+            if(numBytes < 1)
+                throw new ArgumentException("numBytes");
 
-            var buff = new byte[size];
+            var buff = new byte[numBytes];
             new RNGCryptoServiceProvider().GetNonZeroBytes(buff);
             return Convert.ToBase64String(buff);
         }
 
         /// <summary>
         /// Create a salt of exactly the number of characters required.
+        /// Under the hood, it calls CreateSaltFull() and trims the string to the required length.
         /// </summary>
-        /// <param name="size">The number of characters required in the salt</param>
+        /// <param name="numChars">The number of characters required in the salt</param>
         /// <returns>A salt</returns>
-        public static string CreateSalt(int size)
+        public static string CreateSalt(int numChars)
         {
-            if(size < 1)
-                throw new ArgumentException("size");
+            if(numChars < 1)
+                throw new ArgumentException("numChars");
 
-            return CreateSaltFull(size).Substring(0, size);
+            return CreateSaltFull(numChars).Substring(0, numChars);
         }
 
         /// <summary>
@@ -125,7 +126,7 @@ namespace Effortless.Net.Encryption
         public static string CreatePassword(int size, bool allowPunctuation)
         {
             if(size < 1)
-                throw new ArgumentException("size");
+                throw new ArgumentException("numChars");
 
             var s = new StringBuilder();
             const int saltLen = 100;

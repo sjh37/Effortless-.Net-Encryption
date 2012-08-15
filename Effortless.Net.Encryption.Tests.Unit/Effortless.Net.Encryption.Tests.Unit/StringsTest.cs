@@ -51,17 +51,32 @@
         }
 
         [Test]
+        public void Create_salt_full()
+        {
+            const int numBytes = 30;
+            var list = new SortedList<string, string>();
+            for(int n = 0; n < 10000; n++)
+            {
+                string salt = Strings.CreateSaltFull(numBytes);
+                Assert.AreEqual(40, salt.Length);
+
+                Assert.IsFalse(list.ContainsKey(salt));
+                list.Add(salt, salt);
+            }
+        }
+        
+        [Test]
         public void Create_salt()
         {
-            const int saltLen = 30;
-            var list = new List<string>();
-            for(int n = 0; n < 100; n++)
+            const int numChars = 30;
+            var list = new SortedList<string, string>();
+            for(int n = 0; n < 10000; n++)
             {
-                string salt = Strings.CreateSalt(saltLen);
-                Assert.IsTrue(salt.Length == saltLen);
+                string salt = Strings.CreateSalt(numChars);
+                Assert.AreEqual(numChars, salt.Length);
 
-                Assert.IsFalse(list.Contains(salt));
-                list.Add(salt);
+                Assert.IsFalse(list.ContainsKey(salt));
+                list.Add(salt, salt);
             }
         }
 
@@ -103,7 +118,7 @@
             var iv = Bytes.GenerateIV();
             var random = new Random();
 
-            for(var n = 0; n < 100; n++)
+            for(var n = 0; n < 1000; n++)
             {
                 var size = random.Next(4096) + 1;
                 var data = Strings.CreateSalt(size);
