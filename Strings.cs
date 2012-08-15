@@ -7,7 +7,8 @@ namespace Effortless.Net.Encryption
     public static class Strings
     {
         /// <summary>
-        /// Encrypts a string.
+        /// Encrypts a string. The clearString is converted into bytes, then Bytes.Encrypt() is called.
+        /// The resulting cipher data is returned after converting it to base-64.
         /// </summary>
         /// <param name="clearString">The plain text string.</param>
         /// <param name="key">Key</param>
@@ -27,7 +28,9 @@ namespace Effortless.Net.Encryption
         }
 
         /// <summary>
-        /// Encrypts a string.
+        /// Encrypts a string. The password, salt and keySize are all used to generate a key see Bytes.GenerateKey().
+        /// The iv is converted into a byte array using Encoding.UTF8.GetBytes(iv).
+        /// The other Encrypt() function is then called using the clearString, keyBytes and ivBytes.
         /// </summary>
         /// <param name="clearString">The plain text string.</param>
         /// <param name="password">Password to create key with</param>
@@ -90,7 +93,7 @@ namespace Effortless.Net.Encryption
         /// <summary>
         /// Create a salt.
         /// </summary>
-        /// <param name="numBytes">The number of bytes the salt is required to be, which is then converted into a base-64 string. The resulting string length can be larger than numBytes.</param>
+        /// <param name="numBytes">The numBytes is the number of non zero random bytes that will converted into a base-64 string. The resulting string length can be larger than numBytes.</param>
         /// <returns>A salt</returns>
         public static string CreateSaltFull(int numBytes)
         {

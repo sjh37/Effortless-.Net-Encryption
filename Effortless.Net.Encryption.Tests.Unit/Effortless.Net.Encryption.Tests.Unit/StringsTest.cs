@@ -83,7 +83,7 @@
         [Test]
         [TestCase(@"$L;R*gM0\3+%@!#pLR4!@b#ryu'E+Wre_6r^i,b?2-mQ hu|^8ZnQ[_rw._i6%C")]
         [TestCase("Hello world")]
-        [TestCase("This is another test")]
+        [TestCase("My secret text")]
         public void Encrypt_decrypt_using_key_iv(string data)
         {
             byte[] key = Bytes.GenerateKey();
@@ -104,7 +104,7 @@
             const string password = "Hello world";
             const string salt = "saltsaltsalt";
             string iv = string.Empty.PadLeft(32, '#');
-            const string original = "This is another test";
+            const string original = "My secret text";
 
             string encrypted = Strings.Encrypt(original, password, salt, iv, keySize);
             string decrypted = Strings.Decrypt(encrypted, password, salt, iv, keySize);
