@@ -9,11 +9,11 @@ namespace Effortless.Net.Encryption
     /// </summary>
     public enum HashType
     {
-        MD5, 
-        SHA1, 
-        SHA256, 
-        SHA384, 
-        SHA512
+        MD5,    // 128 bit
+        SHA1,   // 160 bit
+        SHA256, // 256 bit
+        SHA384, // 384 bit
+        SHA512  // 512 bit
     }
 
     /// <summary>
