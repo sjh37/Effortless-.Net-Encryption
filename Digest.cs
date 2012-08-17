@@ -8,6 +8,12 @@ namespace Effortless.Net.Encryption
         private readonly string _hash;
         private readonly HashType _hashType;
 
+        /// <summary>
+        /// Constructor where you can define all the properties.
+        /// </summary>
+        /// <param name="data">The data</param>
+        /// <param name="hash">The hash</param>
+        /// <param name="hashType">The HashType used to generate the hash.</param>
         public Digest(string data, string hash, HashType hashType)
         {
             _data = data;
@@ -15,22 +21,49 @@ namespace Effortless.Net.Encryption
             _hashType = hashType;
         }
 
+        // Returns the data
         public string Data
         {
             get { return _data; }
         }
 
+        /// <summary>
+        /// Returns the pre-computed hash.
+        /// </summary>
         public string Hash
         {
             get { return _hash; }
         }
 
+        /// <summary>
+        /// Returns the hash type used to generate the hash
+        /// </summary>
+        public HashType HashType
+        {
+            get { return _hashType; }
+        }
+
+        /// <summary>
+        /// Static function to create a Digest.
+        /// </summary>
+        /// <param name="hashType">HashType algorithm to be used to generate the hash</param>
+        /// <param name="data">The data</param>
+        /// <param name="sharedKey">The sharedKey is shared by the two parties who independently calculate the hash. The data is passed between parties
+        /// together with the hash. The hash will be identical if the data is unmodified. Use a sharedKey that is sufficiently
+        /// long and complex for the application - https://www.grc.com/passwords.htm - and share the sharedKey once over a secure
+        /// channel. See http://en.wikipedia.org/wiki/Cryptographic_hash_function for more information.</param>
+        /// <returns>A Digest class.</returns>
         public static Digest Create(HashType hashType, string data, string sharedKey)
         {
             string hash = Encryption.Hash.Create(hashType, data, sharedKey, true);
             return new Digest(data, hash, hashType);
         }
 
+        /// <summary>
+        /// Returns a string in the following format: XXYYYH*D*
+        /// Where XX is the hashType, YYYY is the length of the hash, H* is the hash, and D* is the data. 
+        /// </summary>
+        /// <returns>A string representing the Digest.</returns>
         public override string ToString()
         {
             string hashType = ((int)_hashType).ToString("d2");
