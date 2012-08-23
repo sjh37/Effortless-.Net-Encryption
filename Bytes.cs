@@ -282,7 +282,7 @@ namespace Effortless.Net.Encryption
         /// <summary>
         /// Decrypt a file into another file
         /// </summary>
-        public static void Decrypt(FileStream fsIn, Stream fsOut, RijndaelManaged alg)
+        public static void Decrypt(Stream fsIn, Stream fsOut, RijndaelManaged alg)
         {
             if (fsIn == null) throw new ArgumentNullException("fsIn");
             if (fsOut == null) throw new ArgumentNullException("fsOut");
