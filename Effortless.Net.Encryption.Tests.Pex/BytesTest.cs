@@ -1,4 +1,4 @@
-// <copyright file="BytesTest.cs" company="Simon Hughes">Copyright © Simon Hughes 2008</copyright>
+// <copyright file="BytesTest.cs" company="Simon Hughes">Copyright © Simon Hughes 2012</copyright>
 
 using System;
 using System.IO;
