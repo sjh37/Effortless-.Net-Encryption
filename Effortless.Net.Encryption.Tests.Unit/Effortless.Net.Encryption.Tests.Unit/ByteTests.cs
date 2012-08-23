@@ -169,7 +169,6 @@ namespace Effortless.Net.Encryption.Tests.Unit
 
                 // Verify
                 memoryStream.Seek(0, SeekOrigin.Begin);
-
                 Assert.AreEqual(_plainData.Length, memoryStream.Length);
 
                 foreach(var expected in _plainData)
@@ -199,6 +198,22 @@ namespace Effortless.Net.Encryption.Tests.Unit
         }
 
         [Test]
+        public void Encrypt_Decrypt_file_to_file_with_generated_key_iv()
+        {
+            string key, iv;
+            Bytes.Encrypt(_filePlainData, _fileEncryptedData, out key, out iv);
+            Bytes.Decrypt(_fileEncryptedData, _filePlainData, key, iv);
+
+            var decryptedData = File.ReadAllBytes(_filePlainData);
+            Assert.AreEqual(_plainData.Length, decryptedData.Length);
+
+            for(int i = 0; i < _plainData.Length; i++)
+            {
+                Assert.AreEqual(_plainData[i], decryptedData[i]);
+            }
+        }
+
+        [Test]
         public void Encrypt_Decrypt_stream_to_file_with_generated_key_iv()
         {
             // Encrypt file
@@ -215,7 +230,6 @@ namespace Effortless.Net.Encryption.Tests.Unit
 
                 // Verify
                 memoryStream.Seek(0, SeekOrigin.Begin);
-
                 Assert.AreEqual(_plainData.Length, memoryStream.Length);
 
                 foreach(var expected in _plainData)
@@ -225,22 +239,5 @@ namespace Effortless.Net.Encryption.Tests.Unit
                 }
             }
         }
-
-        [Test]
-        public void Encrypt_Decrypt_file_to_file_with_generated_key_iv()
-        {
-            string key, iv;
-            Bytes.Encrypt(_filePlainData, _fileEncryptedData, out key, out iv);
-            Bytes.Decrypt(_fileEncryptedData, _filePlainData, key, iv);
-
-            var decryptedData = File.ReadAllBytes(_filePlainData);
-            Assert.AreEqual(_plainData.Length, decryptedData.Length);
-
-            for(int i = 0; i < _plainData.Length; i++)
-            {
-                Assert.AreEqual(_plainData[i], decryptedData[i]);
-            }
-        }
-
     }
 }
