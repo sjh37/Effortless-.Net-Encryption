@@ -34,7 +34,7 @@ namespace Effortless.Net.Encryption
         }
 
         /// <summary>
-        /// Returns the encryption key
+        /// Returns an encryption key to be used with the Rijndael algorithm
         /// </summary>
         public static byte[] GenerateKey()
         {
@@ -46,7 +46,7 @@ namespace Effortless.Net.Encryption
         }
 
         /// <summary>
-        /// Returns the encryption key
+        /// Returns an encryption key to be used with the Rijndael algorithm
         /// </summary>
         /// <param name="password">Password to create key with</param>
         /// <param name="salt">Salt to create key with</param>
@@ -65,7 +65,7 @@ namespace Effortless.Net.Encryption
         }
 
         /// <summary>
-        /// Returns the encryption iv
+        /// Returns the encryption IV to be used with the Rijndael algorithm
         /// </summary>
         public static byte[] GenerateIV()
         {
@@ -77,7 +77,7 @@ namespace Effortless.Net.Encryption
         }
 
         /// <summary>
-        /// Encrypt a byte array into a byte array using a key and an iv
+        /// Encrypt a byte array into a byte array using the given Key and an IV
         /// </summary>
         public static byte[] Encrypt(byte[] clearData, byte[] key, byte[] iv)
         {
@@ -118,7 +118,7 @@ namespace Effortless.Net.Encryption
         }
 
         /// <summary>
-        /// Encrypt a file into another file
+        /// Encrypt a file into another file.
         /// FileStream fsIn = new FileStream(fileIn, FileMode.Open, FileAccess.Read);
         /// </summary>
         public static void Encrypt(Stream fsIn, string fileOut, RijndaelManaged alg)
@@ -193,7 +193,7 @@ namespace Effortless.Net.Encryption
 
         /// <summary>
         /// Encrypt a file into another file.
-        /// The key and an iv are automatically generated. These will be required when Decrypting the data.
+        /// The Key and an IV are automatically generated. These will be required when Decrypting the data.
         /// </summary>
         public static void Encrypt(string fileIn, string fileOut, out string key, out string iv)
         {
@@ -217,7 +217,7 @@ namespace Effortless.Net.Encryption
 
         /// <summary>
         /// Encrypt a file into another file.
-        /// The key and an iv are automatically generated. These will be required when Decrypting the data.
+        /// The Key and an IV are automatically generated. These will be required when Decrypting the data.
         /// </summary>
         public static void Encrypt(Stream fileIn, string fileOut, out string key, out string iv)
         {
@@ -237,7 +237,7 @@ namespace Effortless.Net.Encryption
         }
 
         /// <summary>
-        /// Decrypt a byte array into a byte array using a key and an iv
+        /// Decrypt a byte array into a byte array using a Key and an IV
         /// </summary>
         public static byte[] Decrypt(byte[] cipherData, byte[] key, byte[] iv)
         {
@@ -335,7 +335,7 @@ namespace Effortless.Net.Encryption
         }
 
         /// <summary>
-        /// Decrypt a file into another file using a key and an iv
+        /// Decrypt a file into another file using a Key and an IV
         /// </summary>
         public static void Decrypt(string fileIn, string fileOut, string key, string iv)
         {
@@ -348,7 +348,7 @@ namespace Effortless.Net.Encryption
         }
 
         /// <summary>
-        /// Decrypt a file into another file using a key and an iv
+        /// Decrypt a file into another file using a Key and an IV
         /// </summary>
         public static void Decrypt(string fileIn, Stream fsOut, string key, string iv)
         {
