@@ -4,9 +4,11 @@
     <id>$id$</id>
     <version>$version$</version>
     <authors>Simon Hughes</authors>
-    <owners>$author$</owners>
+    <owners>Simon Hughes. http://www.hicrest.net</owners>
+    <projectUrl>https://effortlessencryption.codeplex.com/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <language>en-GB</language>
+    <tags>c# security password hash digest encryption</tags>
   </metadata>
 </package>
