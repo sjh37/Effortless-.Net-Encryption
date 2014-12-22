@@ -106,8 +106,8 @@
             string iv = string.Empty.PadLeft(32, '#');
             const string original = "My secret text";
 
-            string encrypted = Strings.Encrypt(original, password, salt, iv, keySize);
-            string decrypted = Strings.Decrypt(encrypted, password, salt, iv, keySize);
+            string encrypted = Strings.Encrypt(original, password, salt, iv, keySize, 1);
+            string decrypted = Strings.Decrypt(encrypted, password, salt, iv, keySize, 1);
             Assert.AreEqual(original, decrypted);
         }
 

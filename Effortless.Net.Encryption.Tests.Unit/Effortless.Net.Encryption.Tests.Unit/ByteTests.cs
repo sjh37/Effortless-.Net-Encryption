@@ -86,9 +86,12 @@ namespace Effortless.Net.Encryption.Tests.Unit
         }
 
         [Test]
-        public void Generate_key_with_password_and_salt_iv_encrypt_decrypt_128()
+        [TestCase(1)]
+        [TestCase(1000)]
+        [TestCase(10000)]
+        public void Generate_key_with_password_and_salt_iv_encrypt_decrypt_128(int iterationCount)
         {
-            byte[] key = Bytes.GenerateKey("password", "saltsaltsalt", Bytes.KeySize.Size128);
+            byte[] key = Bytes.GenerateKey("password", "saltsaltsalt", Bytes.KeySize.Size128, iterationCount);
             byte[] iv = Bytes.GenerateIV();
 
             var rng = new RNGCryptoServiceProvider();
@@ -101,9 +104,12 @@ namespace Effortless.Net.Encryption.Tests.Unit
         }
 
         [Test]
-        public void Generate_key_with_password_and_salt_iv_encrypt_decrypt_192()
+        [TestCase(1)]
+        [TestCase(1000)]
+        [TestCase(10000)]
+        public void Generate_key_with_password_and_salt_iv_encrypt_decrypt_192(int iterationCount)
         {
-            byte[] key = Bytes.GenerateKey("password", "saltsaltsalt", Bytes.KeySize.Size192);
+            byte[] key = Bytes.GenerateKey("password", "saltsaltsalt", Bytes.KeySize.Size192, iterationCount);
             byte[] iv = Bytes.GenerateIV();
 
             var rng = new RNGCryptoServiceProvider();
@@ -116,9 +122,12 @@ namespace Effortless.Net.Encryption.Tests.Unit
         }
 
         [Test]
-        public void Generate_key_with_password_and_salt_iv_encrypt_decrypt_256()
+        [TestCase(1)]
+        [TestCase(1000)]
+        [TestCase(10000)]
+        public void Generate_key_with_password_and_salt_iv_encrypt_decrypt_256(int iterationCount)
         {
-            byte[] key = Bytes.GenerateKey("password", "saltsaltsalt", Bytes.KeySize.Size256);
+            byte[] key = Bytes.GenerateKey("password", "saltsaltsalt", Bytes.KeySize.Size256, iterationCount);
             byte[] iv = Bytes.GenerateIV();
 
             var rng = new RNGCryptoServiceProvider();
