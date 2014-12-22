@@ -77,7 +77,8 @@ namespace Effortless.Net.Encryption
         /// <param name="password">Password to create key with</param>
         /// <param name="salt">Salt to create key with</param>
         /// <param name="keySize">Can be 128, 192, or 256</param>
-        public static byte[] GenerateKey(string password, string salt, KeySize keySize)
+        /// <param name="iterationCount">The number of iterations to derive the key.</param>
+        public static byte[] GenerateKey(string password, string salt, KeySize keySize, int iterationCount)
         {
             if (string.IsNullOrEmpty(password)) throw new ArgumentNullException("password");
             if (string.IsNullOrEmpty(salt)) throw new ArgumentNullException("salt");
@@ -86,7 +87,7 @@ namespace Effortless.Net.Encryption
             if (saltValueBytes.Length < 8)
                 throw new ArgumentException("Salt is not at least eight bytes");
 
-            var derivedPassword = new Rfc2898DeriveBytes(password, saltValueBytes);
+            var derivedPassword = new Rfc2898DeriveBytes(password, saltValueBytes, iterationCount);
             return derivedPassword.GetBytes((int)keySize / 8);
         }
 

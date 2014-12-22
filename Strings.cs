@@ -63,15 +63,16 @@ namespace Effortless.Net.Encryption
         /// <param name="salt">Salt to create key with</param>
         /// <param name="iv">IV</param>
         /// <param name="keySize">Can be 128, 192, or 256</param>
+        /// <param name="iterationCount">The number of iterations to derive the key.</param>
         /// <returns>The encrypted string.</returns>
-        public static string Encrypt(string clearString, string password, string salt, string iv, Bytes.KeySize keySize)
+        public static string Encrypt(string clearString, string password, string salt, string iv, Bytes.KeySize keySize, int iterationCount)
         {
             if(string.IsNullOrEmpty(clearString)) throw new ArgumentNullException("clearString");
             if(string.IsNullOrEmpty(password)) throw new ArgumentNullException("password");
             if(string.IsNullOrEmpty(salt)) throw new ArgumentNullException("salt");
             if(string.IsNullOrEmpty(iv)) throw new ArgumentNullException("iv");
 
-            byte[] keyBytes = Bytes.GenerateKey(password, salt, keySize);
+            byte[] keyBytes = Bytes.GenerateKey(password, salt, keySize, iterationCount);
             byte[] ivBytes = Encoding.UTF8.GetBytes(iv);
             return Encrypt(clearString, keyBytes, ivBytes);
         }
@@ -103,15 +104,16 @@ namespace Effortless.Net.Encryption
         /// <param name="salt">Salt to create key with</param>
         /// <param name="iv">IV</param>
         /// <param name="keySize">Can be 128, 192, or 256</param>
+        /// <param name="iterationCount">The number of iterations to derive the key.</param>
         /// <returns>The decrypted string.</returns>
-        public static string Decrypt(string cipherString, string password, string salt, string iv, Bytes.KeySize keySize)
+        public static string Decrypt(string cipherString, string password, string salt, string iv, Bytes.KeySize keySize, int iterationCount)
         {
             if(string.IsNullOrEmpty(cipherString)) throw new ArgumentNullException("cipherString");
             if(string.IsNullOrEmpty(password)) throw new ArgumentNullException("password");
             if(string.IsNullOrEmpty(salt)) throw new ArgumentNullException("salt");
             if(string.IsNullOrEmpty(iv)) throw new ArgumentNullException("iv");
 
-            byte[] keyBytes = Bytes.GenerateKey(password, salt, keySize);
+            byte[] keyBytes = Bytes.GenerateKey(password, salt, keySize, iterationCount);
             byte[] ivBytes = Encoding.UTF8.GetBytes(iv);
             return Decrypt(cipherString, keyBytes, ivBytes);
         }

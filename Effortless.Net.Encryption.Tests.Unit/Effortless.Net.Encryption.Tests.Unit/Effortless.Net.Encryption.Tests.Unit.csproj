@@ -54,7 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Effortless.Net.Encryption.csproj">
-      <Project>{ECADC722-EE08-401F-BF42-368F79ED4DEF}</Project>
+      <Project>{ecadc722-ee08-401f-bf42-368f79ed4def}</Project>
       <Name>Effortless.Net.Encryption</Name>
     </ProjectReference>
   </ItemGroup>
