@@ -77,8 +77,8 @@ namespace Effortless.Net.Encryption
         /// <param name="password">Password to create key with</param>
         /// <param name="salt">Salt to create key with</param>
         /// <param name="keySize">Can be 128, 192, or 256</param>
-        /// <param name="iterationCount">The number of iterations to derive the key.</param>
-        public static byte[] GenerateKey(string password, string salt, KeySize keySize, int iterationCount)
+        /// <param name="iterationCount">The number of iterations to derive the key. Default is 1000 iterations.</param>
+        public static byte[] GenerateKey(string password, string salt, KeySize keySize, int iterationCount = 1000)
         {
             if (string.IsNullOrEmpty(password)) throw new ArgumentNullException("password");
             if (string.IsNullOrEmpty(salt)) throw new ArgumentNullException("salt");

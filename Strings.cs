@@ -63,9 +63,9 @@ namespace Effortless.Net.Encryption
         /// <param name="salt">Salt to create key with</param>
         /// <param name="iv">IV</param>
         /// <param name="keySize">Can be 128, 192, or 256</param>
-        /// <param name="iterationCount">The number of iterations to derive the key.</param>
+        /// <param name="iterationCount">The number of iterations to derive the key. Default is 1000 iterations.</param>
         /// <returns>The encrypted string.</returns>
-        public static string Encrypt(string clearString, string password, string salt, string iv, Bytes.KeySize keySize, int iterationCount)
+        public static string Encrypt(string clearString, string password, string salt, string iv, Bytes.KeySize keySize, int iterationCount = 1000)
         {
             if(string.IsNullOrEmpty(clearString)) throw new ArgumentNullException("clearString");
             if(string.IsNullOrEmpty(password)) throw new ArgumentNullException("password");
@@ -104,9 +104,9 @@ namespace Effortless.Net.Encryption
         /// <param name="salt">Salt to create key with</param>
         /// <param name="iv">IV</param>
         /// <param name="keySize">Can be 128, 192, or 256</param>
-        /// <param name="iterationCount">The number of iterations to derive the key.</param>
+        /// <param name="iterationCount">The number of iterations to derive the key. Default is 1000 iterations.</param>
         /// <returns>The decrypted string.</returns>
-        public static string Decrypt(string cipherString, string password, string salt, string iv, Bytes.KeySize keySize, int iterationCount)
+        public static string Decrypt(string cipherString, string password, string salt, string iv, Bytes.KeySize keySize, int iterationCount = 1000)
         {
             if(string.IsNullOrEmpty(cipherString)) throw new ArgumentNullException("cipherString");
             if(string.IsNullOrEmpty(password)) throw new ArgumentNullException("password");
