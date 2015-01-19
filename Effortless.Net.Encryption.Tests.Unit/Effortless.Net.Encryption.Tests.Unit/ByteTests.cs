@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 using NUnit.Framework;
 
 namespace Effortless.Net.Encryption.Tests.Unit
@@ -157,6 +158,20 @@ namespace Effortless.Net.Encryption.Tests.Unit
                 byte[] decrypted = Bytes.Decrypt(encrypted, key, iv);
                 Assert.AreEqual(data, decrypted);
             }
+        }
+  
+        [Test]
+        [TestCase(Bytes.KeySize.Size128)]
+        [TestCase(Bytes.KeySize.Size192)]
+        [TestCase(Bytes.KeySize.Size256)]
+        public void V1_to_v2_migration(Bytes.KeySize keySize)
+        {
+            byte[] v1Key = new Rfc2898DeriveBytes("password", Encoding.UTF8.GetBytes("saltsaltsalt")).GetBytes((int)keySize / 8);
+            byte[] v2KeyDefault = Bytes.GenerateKey("password", "saltsaltsalt", keySize);
+            byte[] v2Key1000 = Bytes.GenerateKey("password", "saltsaltsalt", keySize, 1000);
+
+            Assert.AreEqual(v1Key, v2KeyDefault);
+            Assert.AreEqual(v1Key, v2Key1000);
         }
 
         [Test]
