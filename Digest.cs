@@ -65,8 +65,7 @@ namespace Effortless.Net.Encryption
         ///     The sharedKey is shared by the two parties who independently calculate the hash. The data is passed between parties
         ///     together with the hash. The hash will be identical if the data is unmodified. Use a sharedKey that is sufficiently
         ///     long and complex for the application - https://www.grc.com/passwords.htm - and share the sharedKey once over a
-        ///     secure
-        ///     channel. See http://en.wikipedia.org/wiki/Cryptographic_hash_function for more information.
+        ///     secure channel. See http://en.wikipedia.org/wiki/Cryptographic_hash_function for more information.
         /// </param>
         /// <returns>A Digest class.</returns>
         public static Digest Create(HashType hashType, string data, string sharedKey)
@@ -95,8 +94,7 @@ namespace Effortless.Net.Encryption
         ///     The sharedKey is shared by the two parties who independently calculate the hash. The data is passed between parties
         ///     together with the hash. The hash will be identical if the data is unmodified. Use a sharedKey that is sufficiently
         ///     long and complex for the application - https://www.grc.com/passwords.htm - and share the sharedKey once over a
-        ///     secure
-        ///     channel. See http://en.wikipedia.org/wiki/Cryptographic_hash_function for more information.
+        ///     secure channel. See http://en.wikipedia.org/wiki/Cryptographic_hash_function for more information.
         /// </param>
         /// <returns>Returns a Digest if succesfully verified, otherwise returns null</returns>
         public static Digest CreateFromString(string hashedData, string sharedKey)
