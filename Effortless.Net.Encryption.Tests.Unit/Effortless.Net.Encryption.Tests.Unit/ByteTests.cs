@@ -32,9 +32,7 @@ namespace Effortless.Net.Encryption.Tests.Unit
             var path = Path.GetTempPath();
             _fileEncryptedData = Path.Combine(path, "testEncrypted.txt");
             _filePlainData = Path.Combine(path, "testPlain.txt");
-            _plainData =
-                GetBytes(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla auctor, justo quis rhoncus hendrerit, lacus ligula lobortis ipsum, et semper justo lorem ut tellus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur scelerisque nisl et lacus pulvinar malesuada. In hac habitasse platea dictumst. Curabitur est metus, posuere quis pulvinar a, congue nec neque. Sed at mi vitae leo condimentum blandit. Mauris in tortor eu risus pellentesque molestie. Aliquam at leo eget erat volutpat ultricies in in purus. Quisque elit sapien, accumsan vitae sagittis ac, faucibus congue neque.");
+            _plainData = GetBytes("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla auctor, justo quis rhoncus hendrerit, lacus ligula lobortis ipsum, et semper justo lorem ut tellus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur scelerisque nisl et lacus pulvinar malesuada. In hac habitasse platea dictumst. Curabitur est metus, posuere quis pulvinar a, congue nec neque. Sed at mi vitae leo condimentum blandit. Mauris in tortor eu risus pellentesque molestie. Aliquam at leo eget erat volutpat ultricies in in purus. Quisque elit sapien, accumsan vitae sagittis ac, faucibus congue neque.");
 
             _rijndaelManaged = new RijndaelManaged
             {
