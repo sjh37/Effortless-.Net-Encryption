@@ -1,37 +1,12 @@
-﻿namespace Effortless.Net.Encryption.Tests.Unit
-{
-    using System;
-    using System.Collections.Generic;
-    using NUnit.Framework;
+﻿using System;
+using System.Collections.Generic;
+using NUnit.Framework;
 
+namespace Effortless.Net.Encryption.Tests.Unit
+{
     [TestFixture]
     public class StringsTest
     {
-        [Test]
-        [TestCase(true)]
-        [TestCase(false)]
-        public void Create_password(bool allowPunctuation)
-        {
-            const int passLen = 10;
-            var list = new List<string>();
-            for(int n = 0; n < 100; n++)
-            {
-                string password = Strings.CreatePassword(passLen, allowPunctuation);
-                Assert.AreEqual(passLen, password.Length);
-
-                foreach(char c in password)
-                {
-                    if(allowPunctuation)
-                        Assert.IsTrue(Char.IsLetterOrDigit(c) || Char.IsPunctuation(c));
-                    else
-                        Assert.IsTrue(Char.IsLetterOrDigit(c));
-                }
-
-                Assert.IsFalse(list.Contains(password));
-                list.Add(password);
-            }
-        }
-
         [Test]
         [TestCase(1, true)]
         [TestCase(1, false)]
@@ -46,33 +21,41 @@
         public void Create_long_password(int size, bool allowPunctuation)
         {
             // Check for a long password, so it causes multiple CreateSaltsFull() function calls
-            string s = Strings.CreatePassword(size, allowPunctuation);
+            var s = Strings.CreatePassword(size, allowPunctuation);
             Assert.AreEqual(size, s.Length);
         }
 
         [Test]
-        public void Create_salt_full()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Create_password(bool allowPunctuation)
         {
-            const int numBytes = 30;
-            var list = new SortedList<string, string>();
-            for(int n = 0; n < 10000; n++)
+            const int passLen = 10;
+            var list = new List<string>();
+            for (var n = 0; n < 100; n++)
             {
-                string salt = Strings.CreateSaltFull(numBytes);
-                Assert.AreEqual(40, salt.Length);
+                var password = Strings.CreatePassword(passLen, allowPunctuation);
+                Assert.AreEqual(passLen, password.Length);
 
-                Assert.IsFalse(list.ContainsKey(salt));
-                list.Add(salt, salt);
+                foreach (var c in password)
+                    if (allowPunctuation)
+                        Assert.IsTrue(char.IsLetterOrDigit(c) || char.IsPunctuation(c));
+                    else
+                        Assert.IsTrue(char.IsLetterOrDigit(c));
+
+                Assert.IsFalse(list.Contains(password));
+                list.Add(password);
             }
         }
-        
+
         [Test]
         public void Create_salt()
         {
             const int numChars = 30;
             var list = new SortedList<string, string>();
-            for(int n = 0; n < 10000; n++)
+            for (var n = 0; n < 10000; n++)
             {
-                string salt = Strings.CreateSalt(numChars);
+                var salt = Strings.CreateSalt(numChars);
                 Assert.AreEqual(numChars, salt.Length);
 
                 Assert.IsFalse(list.ContainsKey(salt));
@@ -81,18 +64,35 @@
         }
 
         [Test]
-        [TestCase(@"$L;R*gM0\3+%@!#pLR4!@b#ryu'E+Wre_6r^i,b?2-mQ hu|^8ZnQ[_rw._i6%C")]
-        [TestCase("Hello world")]
-        [TestCase("My secret text")]
-        public void Encrypt_decrypt_using_key_iv(string data)
+        public void Create_salt_full()
         {
-            byte[] key = Bytes.GenerateKey();
-            byte[] iv = Bytes.GenerateIV();
+            const int numBytes = 30;
+            var list = new SortedList<string, string>();
+            for (var n = 0; n < 10000; n++)
+            {
+                var salt = Strings.CreateSaltFull(numBytes);
+                Assert.AreEqual(40, salt.Length);
 
-            string encrypted = Strings.Encrypt(data, key, iv);
-            string decrypted = Strings.Decrypt(encrypted, key, iv);
+                Assert.IsFalse(list.ContainsKey(salt));
+                list.Add(salt, salt);
+            }
+        }
 
-            Assert.AreEqual(data, decrypted);
+        [Test]
+        public void Encrypt_decrypt_using_a_very_long_string()
+        {
+            var key = Bytes.GenerateKey();
+            var iv = Bytes.GenerateIV();
+            var random = new Random();
+
+            for (var n = 0; n < 1000; n++)
+            {
+                var size = random.Next(4096) + 1;
+                var data = Strings.CreateSalt(size);
+                var encrypted = Strings.Encrypt(data, key, iv);
+                var decrypted = Strings.Decrypt(encrypted, key, iv);
+                Assert.AreEqual(data, decrypted);
+            }
         }
 
         [Test]
@@ -103,29 +103,27 @@
         {
             const string password = "Hello world";
             const string salt = "saltsaltsalt";
-            string iv = string.Empty.PadLeft(32, '#');
+            var iv = string.Empty.PadLeft(32, '#');
             const string original = "My secret text";
 
-            string encrypted = Strings.Encrypt(original, password, salt, iv, keySize, 1);
-            string decrypted = Strings.Decrypt(encrypted, password, salt, iv, keySize, 1);
+            var encrypted = Strings.Encrypt(original, password, salt, iv, keySize, 1);
+            var decrypted = Strings.Decrypt(encrypted, password, salt, iv, keySize, 1);
             Assert.AreEqual(original, decrypted);
         }
 
         [Test]
-        public void Encrypt_decrypt_using_a_very_long_string()
+        [TestCase(@"$L;R*gM0\3+%@!#pLR4!@b#ryu'E+Wre_6r^i,b?2-mQ hu|^8ZnQ[_rw._i6%C")]
+        [TestCase("Hello world")]
+        [TestCase("My secret text")]
+        public void Encrypt_decrypt_using_key_iv(string data)
         {
             var key = Bytes.GenerateKey();
             var iv = Bytes.GenerateIV();
-            var random = new Random();
 
-            for(var n = 0; n < 1000; n++)
-            {
-                var size = random.Next(4096) + 1;
-                var data = Strings.CreateSalt(size);
-                var encrypted = Strings.Encrypt(data, key, iv);
-                var decrypted = Strings.Decrypt(encrypted, key, iv);
-                Assert.AreEqual(data, decrypted);
-            }
+            var encrypted = Strings.Encrypt(data, key, iv);
+            var decrypted = Strings.Decrypt(encrypted, key, iv);
+
+            Assert.AreEqual(data, decrypted);
         }
     }
 }

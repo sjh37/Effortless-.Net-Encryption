@@ -1,7 +1,7 @@
-﻿namespace Effortless.Net.Encryption.Tests.Unit
-{
-    using NUnit.Framework;
+﻿using NUnit.Framework;
 
+namespace Effortless.Net.Encryption.Tests.Unit
+{
     [TestFixture]
     public class HashTests
     {
@@ -20,10 +20,40 @@
         {
             const string data = "Hello";
             const string sharedKey = "key";
-            string hash = Hash.Create(hashType, data, sharedKey, showBytes);
+            var hash = Hash.Create(hashType, data, sharedKey, showBytes);
             Assert.AreEqual(result, hash);
             Assert.IsTrue(Hash.Verify(hashType, data, sharedKey, showBytes, hash));
             Assert.IsFalse(Hash.Verify(hashType, data, "unknownKey", showBytes, hash));
+        }
+
+        [Test]
+        [TestCase(true, true, "", "")]
+        [TestCase(true, false, "", "")]
+        [TestCase(false, true, "", "")]
+        [TestCase(false, false, "", "")]
+        [TestCase(true, true, "key", "Key")]
+        [TestCase(true, false, "key", "Key")]
+        [TestCase(false, true, "key", "Key")]
+        [TestCase(false, false, "key", "Key")]
+        public void CreateHashInLoop(bool allowPunctuation, bool showBytes, string key1, string key2)
+        {
+            const int passLen = 10;
+            for (var n = 0; n < 100; n++)
+            {
+                var password = Strings.CreatePassword(passLen, allowPunctuation);
+                Assert.IsTrue(password.Length == passLen);
+
+                var hash1 = Hash.Create(HashType.MD5, password, key1, showBytes);
+                var hash2 = Hash.Create(HashType.MD5, password, key2, showBytes);
+
+                Assert.IsTrue(Hash.Verify(HashType.MD5, password, key1, showBytes, hash1));
+                Assert.IsTrue(Hash.Verify(HashType.MD5, password, key2, showBytes, hash2));
+
+                if (key1 == key2)
+                    Assert.AreEqual(hash1, hash2);
+                else
+                    Assert.AreNotEqual(hash1, hash2);
+            }
         }
 
         [Test]
@@ -40,40 +70,10 @@
         public void CreateWithNoKey(bool showBytes, HashType hashType, string result)
         {
             const string data = "Hello";
-            string hash = Hash.Create(hashType, data, string.Empty, showBytes);
+            var hash = Hash.Create(hashType, data, string.Empty, showBytes);
             Assert.AreEqual(result, hash);
             Assert.IsTrue(Hash.Verify(hashType, data, string.Empty, showBytes, hash));
             Assert.IsFalse(Hash.Verify(hashType, data, "unknownKey", showBytes, hash));
-        }
-        
-        [Test]
-        [TestCase(true, true, "", "")]
-        [TestCase(true, false, "", "")]
-        [TestCase(false, true, "", "")]
-        [TestCase(false, false, "", "")]
-        [TestCase(true, true, "key", "Key")]
-        [TestCase(true, false, "key", "Key")]
-        [TestCase(false, true, "key", "Key")]
-        [TestCase(false, false, "key", "Key")]
-        public void CreateHashInLoop(bool allowPunctuation, bool showBytes, string key1, string key2)
-        {
-            const int passLen = 10;
-            for(int n = 0; n < 100; n++)
-            {
-                string password = Strings.CreatePassword(passLen, allowPunctuation);
-                Assert.IsTrue(password.Length == passLen);
-
-                string hash1 = Hash.Create(HashType.MD5, password, key1, showBytes);
-                string hash2 = Hash.Create(HashType.MD5, password, key2, showBytes);
-
-                Assert.IsTrue(Hash.Verify(HashType.MD5, password, key1, showBytes, hash1));
-                Assert.IsTrue(Hash.Verify(HashType.MD5, password, key2, showBytes, hash2));
-
-                if(key1 == key2)
-                    Assert.AreEqual(hash1, hash2);
-                else
-                    Assert.AreNotEqual(hash1, hash2);
-            }
         }
     }
 }
