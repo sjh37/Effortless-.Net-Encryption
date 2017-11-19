@@ -63,12 +63,11 @@ namespace Effortless.Net.Encryption.Tests.Unit
             var iv = Bytes.GenerateIV();
             var random = new Random();
 
-            var rng = new RNGCryptoServiceProvider();
             for (var n = 0; n < 100; n++)
             {
                 var size = random.Next(32768) + 1;
                 var data = new byte[size];
-                rng.GetBytes(data);
+                Bytes.GetRandomBytes(data);
 
                 var encrypted = Bytes.Encrypt(data, key, iv);
                 var decrypted = Bytes.Decrypt(encrypted, key, iv);
@@ -167,9 +166,8 @@ namespace Effortless.Net.Encryption.Tests.Unit
             var key = Bytes.GenerateKey();
             var iv = Bytes.GenerateIV();
 
-            var rng = new RNGCryptoServiceProvider();
             var data = new byte[1024];
-            rng.GetBytes(data);
+            Bytes.GetRandomBytes(data);
 
             var encrypted = Bytes.Encrypt(data, key, iv);
             var decrypted = Bytes.Decrypt(encrypted, key, iv);
@@ -185,9 +183,8 @@ namespace Effortless.Net.Encryption.Tests.Unit
             var key = Bytes.GenerateKey("password", "saltsaltsalt", Bytes.KeySize.Size128, iterationCount);
             var iv = Bytes.GenerateIV();
 
-            var rng = new RNGCryptoServiceProvider();
             var data = new byte[1024];
-            rng.GetBytes(data);
+            Bytes.GetRandomBytes(data);
 
             var encrypted = Bytes.Encrypt(data, key, iv);
             var decrypted = Bytes.Decrypt(encrypted, key, iv);
@@ -203,9 +200,8 @@ namespace Effortless.Net.Encryption.Tests.Unit
             var key = Bytes.GenerateKey("password", "saltsaltsalt", Bytes.KeySize.Size192, iterationCount);
             var iv = Bytes.GenerateIV();
 
-            var rng = new RNGCryptoServiceProvider();
             var data = new byte[1024];
-            rng.GetBytes(data);
+            Bytes.GetRandomBytes(data);
 
             var encrypted = Bytes.Encrypt(data, key, iv);
             var decrypted = Bytes.Decrypt(encrypted, key, iv);
@@ -221,13 +217,33 @@ namespace Effortless.Net.Encryption.Tests.Unit
             var key = Bytes.GenerateKey("password", "saltsaltsalt", Bytes.KeySize.Size256, iterationCount);
             var iv = Bytes.GenerateIV();
 
-            var rng = new RNGCryptoServiceProvider();
             var data = new byte[1024];
-            rng.GetBytes(data);
+            Bytes.GetRandomBytes(data);
 
             var encrypted = Bytes.Encrypt(data, key, iv);
             var decrypted = Bytes.Decrypt(encrypted, key, iv);
             Assert.AreEqual(data, decrypted);
+        }
+
+        [Test]
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(4)]
+        [TestCase(10)]
+        [TestCase(11)]
+        [TestCase(100)]
+        [TestCase(101)]
+        [TestCase(1000)]
+        [TestCase(1001)]
+        public void ByteArrayToHex_HexToByteArray(int numChars)
+        {
+            var data = new byte[numChars];
+            Bytes.GetRandomBytes(data);
+
+            var hexString = Bytes.ByteArrayToHex(data);
+            var result = Bytes.HexToByteArray(hexString);
+            Assert.AreEqual(data, result);
         }
 
         //private static string GetString(byte[] bytes)

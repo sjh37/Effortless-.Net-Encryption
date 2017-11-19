@@ -107,7 +107,7 @@ namespace Effortless.Net.Encryption
             var input = Encoding.UTF8.GetBytes(data + sharedKey);
             var result = hashAlgorithm.ComputeHash(input);
             return showBytes
-                ? BitConverter.ToString(result).Replace("-", string.Empty)
+                ? Bytes.ByteArrayToHex(result)
                 : Convert.ToBase64String(result);
         }
     }
