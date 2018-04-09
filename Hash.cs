@@ -60,6 +60,36 @@ namespace Effortless.Net.Encryption
         private static readonly Lazy<SHA512> Sha512 = new Lazy<SHA512>(SHA512.Create);
 
         /// <summary>
+        ///     Creates a hash and retuns the byte array of the hash
+        /// </summary>
+        /// <param name="hashType">The type of hash algorithm to use</param>
+        /// <param name="data">The data to hash.</param>
+        /// <param name="sharedKey">The shared secret key.</param>
+        public static byte[] Create(HashType hashType, string data, string sharedKey = "")
+        {
+            switch (hashType)
+            {
+                case HashType.MD5:
+                    return HashData(Md5.Value, data, sharedKey);
+
+                case HashType.SHA1:
+                    return HashData(Sha1.Value, data, sharedKey);
+
+                case HashType.SHA256:
+                    return HashData(Sha256.Value, data, sharedKey);
+
+                case HashType.SHA384:
+                    return HashData(Sha384.Value, data, sharedKey);
+
+                case HashType.SHA512:
+                    return HashData(Sha512.Value, data, sharedKey);
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(hashType));
+            }
+        }
+
+        /// <summary>
         ///     Creates a hash
         /// </summary>
         /// <param name="hashType">The type of hash algorithm to use</param>
@@ -98,14 +128,19 @@ namespace Effortless.Net.Encryption
             return hash == Create(hashType, data, sharedKey, showBytes);
         }
 
-        private static string HashData(HashAlgorithm hashAlgorithm, string data, string sharedKey, bool showBytes)
+        private static byte[] HashData(HashAlgorithm hashAlgorithm, string data, string sharedKey)
         {
             if (hashAlgorithm == null) throw new ArgumentNullException(nameof(hashAlgorithm));
             if (data == null) throw new ArgumentNullException(nameof(data));
             if (sharedKey == null) throw new ArgumentNullException(nameof(sharedKey));
 
             var input = Encoding.UTF8.GetBytes(data + sharedKey);
-            var result = hashAlgorithm.ComputeHash(input);
+            return hashAlgorithm.ComputeHash(input);
+        }
+
+        private static string HashData(HashAlgorithm hashAlgorithm, string data, string sharedKey, bool showBytes)
+        {
+            var result = HashData(hashAlgorithm, data, sharedKey);
             return showBytes
                 ? Bytes.ByteArrayToHex(result)
                 : Convert.ToBase64String(result);

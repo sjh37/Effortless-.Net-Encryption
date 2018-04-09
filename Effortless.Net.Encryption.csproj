@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Bytes.cs" />
     <Compile Include="Digest.cs" />
+    <Compile Include="DigitalSignature.cs" />
     <Compile Include="Hash.cs" />
     <Compile Include="Strings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
