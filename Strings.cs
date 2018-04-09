@@ -49,13 +49,13 @@ namespace Effortless.Net.Encryption
             if (string.IsNullOrEmpty(clearString))
                 throw new ArgumentNullException(nameof(clearString));
 
-            var cipherData = Bytes.Encrypt(new UTF8Encoding().GetBytes(clearString), key, iv);
+            var cipherData = Bytes.Encrypt(new UnicodeEncoding().GetBytes(clearString), key, iv);
             return Convert.ToBase64String(cipherData, 0, cipherData.Length);
         }
 
         /// <summary>
         ///     Encrypts a string. The password, salt and keySize are all used to generate a key see Bytes.GenerateKey().
-        ///     The iv is converted into a byte array using Encoding.UTF8.GetBytes(iv).
+        ///     The iv is converted into a byte array using Encoding.Unicode.GetBytes(iv).
         ///     The other Encrypt() function is then called using the clearString, keyBytes and ivBytes.
         /// </summary>
         /// <param name="clearString">The plain text string.</param>
@@ -94,7 +94,7 @@ namespace Effortless.Net.Encryption
                 throw new ArgumentNullException(nameof(cipherString));
 
             var clearData = Bytes.Decrypt(Convert.FromBase64String(cipherString), key, iv);
-            return new UTF8Encoding().GetString(clearData);
+            return new UnicodeEncoding().GetString(clearData);
         }
 
         /// <summary>

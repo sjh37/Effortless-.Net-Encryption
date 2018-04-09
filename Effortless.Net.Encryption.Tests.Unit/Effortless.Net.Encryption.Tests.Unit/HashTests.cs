@@ -6,16 +6,16 @@ namespace Effortless.Net.Encryption.Tests.Unit
     public class HashTests
     {
         [Test]
-        [TestCase(true, HashType.MD5, "6E721FFDDD9974CC99A10A3D04385B33")]
-        [TestCase(true, HashType.SHA1, "E483166C1BCA40E5A1289D6416C6DE1A271F2ACE")]
-        [TestCase(true, HashType.SHA256, "C63338687D9BC4E95350C465D392DB3518C777AE3A04284005B358350767A710")]
-        [TestCase(true, HashType.SHA384, "584BE855D030A6E25C07909751D3762429C3C811935CB57A34AD686F82FDAFAF1F72594BBE38CA0C95EDD2DD81E9035A")]
-        [TestCase(true, HashType.SHA512, "ABCB5D5F7DE874D6AB172E69106FEE23B9957CF074DDE23CD0A9A29D8E56E4EC0D73C42F63C633FFB68C8E8955F2C220EA97FF65C12402DFC9B2911422062842")]
-        [TestCase(false, HashType.MD5, "bnIf/d2ZdMyZoQo9BDhbMw==")]
-        [TestCase(false, HashType.SHA1, "5IMWbBvKQOWhKJ1kFsbeGicfKs4=")]
-        [TestCase(false, HashType.SHA256, "xjM4aH2bxOlTUMRl05LbNRjHd646BChABbNYNQdnpxA=")]
-        [TestCase(false, HashType.SHA384, "WEvoVdAwpuJcB5CXUdN2JCnDyBGTXLV6NK1ob4L9r68fcllLvjjKDJXt0t2B6QNa")]
-        [TestCase(false, HashType.SHA512, "q8tdX33odNarFy5pEG/uI7mVfPB03eI80KminY5W5OwNc8QvY8Yz/7aMjolV8sIg6pf/ZcEkAt/JspEUIgYoQg==")]
+        [TestCase(true, HashType.MD5, "63602C271DFB9E8A2B16823A5DC5020E")]
+        [TestCase(true, HashType.SHA1, "6FD75D8D3D3A7FB244F04178AA50C8AF2180BA72")]
+        [TestCase(true, HashType.SHA256, "F7AAE2D999881387B8362976AD878D041527F78F7EFF7D1EAFA1A6212A2A4061")]
+        [TestCase(true, HashType.SHA384, "B78E547A75A256B7902F05378D452AB6C8192D48232E312B466E40E5ED9BE1A5B77053251C5D0177EFF1DDC2A6DE9B1E")]
+        [TestCase(true, HashType.SHA512, "A300C834A06AA8935B27991C2F3D044009AC1952E0B51845DD8AE2178F778C82F012C3A343266C41A493A8D16966C25A4F88E2A8FBEAE6AD8D5F0AA6FE29665A")]
+        [TestCase(false, HashType.MD5, "Y2AsJx37noorFoI6XcUCDg==")]
+        [TestCase(false, HashType.SHA1, "b9ddjT06f7JE8EF4qlDIryGAunI=")]
+        [TestCase(false, HashType.SHA256, "96ri2ZmIE4e4Nil2rYeNBBUn949+/30er6GmISoqQGE=")]
+        [TestCase(false, HashType.SHA384, "t45UenWiVreQLwU3jUUqtsgZLUgjLjErRm5A5e2b4aW3cFMlHF0Bd+/x3cKm3pse")]
+        [TestCase(false, HashType.SHA512, "owDINKBqqJNbJ5kcLz0EQAmsGVLgtRhF3YriF493jILwEsOjQyZsQaSTqNFpZsJaT4jiqPvq5q2NXwqm/ilmWg==")]
         public void Create(bool showBytes, HashType hashType, string result)
         {
             const string data = "Hello";
@@ -57,16 +57,16 @@ namespace Effortless.Net.Encryption.Tests.Unit
         }
 
         [Test]
-        [TestCase(true, HashType.MD5, "8B1A9953C4611296A827ABF8C47804D7")]
-        [TestCase(true, HashType.SHA1, "F7FF9E8B7BB2E09B70935A5D785E0CC5D9D0ABF0")]
-        [TestCase(true, HashType.SHA256, "185F8DB32271FE25F561A6FC938B2E264306EC304EDA518007D1764826381969")]
-        [TestCase(true, HashType.SHA384, "3519FE5AD2C596EFE3E276A6F351B8FC0B03DB861782490D45F7598EBD0AB5FD5520ED102F38C4A5EC834E98668035FC")]
-        [TestCase(true, HashType.SHA512, "3615F80C9D293ED7402687F94B22D58E529B8CC7916F8FAC7FDDF7FBD5AF4CF777D3D795A7A00A16BF7E7F3FB9561EE9BAAE480DA9FE7A18769E71886B03F315")]
-        [TestCase(false, HashType.MD5, "ixqZU8RhEpaoJ6v4xHgE1w==")]
-        [TestCase(false, HashType.SHA1, "9/+ei3uy4Jtwk1pdeF4MxdnQq/A=")]
-        [TestCase(false, HashType.SHA256, "GF+NsyJx/iX1Yab8k4suJkMG7DBO2lGAB9F2SCY4GWk=")]
-        [TestCase(false, HashType.SHA384, "NRn+WtLFlu/j4nam81G4/AsD24YXgkkNRfdZjr0Ktf1VIO0QLzjEpeyDTphmgDX8")]
-        [TestCase(false, HashType.SHA512, "NhX4DJ0pPtdAJof5SyLVjlKbjMeRb4+sf933+9WvTPd309eVp6AKFr9+fz+5Vh7puq5IDan+ehh2nnGIawPzFQ==")]
+        [TestCase(true, HashType.MD5, "ED8DEEF5BA6E0731D0C01EE7C4BAFC36")]
+        [TestCase(true, HashType.SHA1, "D2EFCBBA102ED3339947E85F4141EB08926E40E9")]
+        [TestCase(true, HashType.SHA256, "A07E4F7343246C82B26F32E56F85418D518D8B2F2DAE77F1D56FE7AF50DB97AF")]
+        [TestCase(true, HashType.SHA384, "7428EA564921C0E1F5C927D4E72F0C4A01D9A7AC3D7A204C5A9D3040A88249953090D9763FEDA173FEE3FA71F75E27DD")]
+        [TestCase(true, HashType.SHA512, "2C5F15C7829564C32AF70D9AEE7389BDE5D0544534010C9058D0D7A0CC7DE49656E0674041A0907B80B1B05E18B459B5428AE8EE0F43A680F0922EE3D00E6A14")]
+        [TestCase(false, HashType.MD5, "7Y3u9bpuBzHQwB7nxLr8Ng==")]
+        [TestCase(false, HashType.SHA1, "0u/LuhAu0zOZR+hfQUHrCJJuQOk=")]
+        [TestCase(false, HashType.SHA256, "oH5Pc0MkbIKybzLlb4VBjVGNiy8trnfx1W/nr1Dbl68=")]
+        [TestCase(false, HashType.SHA384, "dCjqVkkhwOH1ySfU5y8MSgHZp6w9eiBMWp0wQKiCSZUwkNl2P+2hc/7j+nH3Xifd")]
+        [TestCase(false, HashType.SHA512, "LF8Vx4KVZMMq9w2a7nOJveXQVEU0AQyQWNDXoMx95JZW4GdAQaCQe4CxsF4YtFm1Qoro7g9DpoDwki7j0A5qFA==")]
         public void CreateWithNoKey(bool showBytes, HashType hashType, string result)
         {
             const string data = "Hello";

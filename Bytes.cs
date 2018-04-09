@@ -85,7 +85,7 @@ namespace Effortless.Net.Encryption
             if (string.IsNullOrEmpty(password)) throw new ArgumentNullException(nameof(password));
             if (string.IsNullOrEmpty(salt)) throw new ArgumentNullException(nameof(salt));
 
-            var saltValueBytes = Encoding.UTF8.GetBytes(salt);
+            var saltValueBytes = Encoding.Unicode.GetBytes(salt);
             if (saltValueBytes.Length < 8)
                 throw new ArgumentException("Salt is not at least eight bytes");
 

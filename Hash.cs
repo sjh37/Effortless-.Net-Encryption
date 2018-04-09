@@ -134,7 +134,7 @@ namespace Effortless.Net.Encryption
             if (data == null) throw new ArgumentNullException(nameof(data));
             if (sharedKey == null) throw new ArgumentNullException(nameof(sharedKey));
 
-            var input = Encoding.UTF8.GetBytes(data + sharedKey);
+            var input = Encoding.Unicode.GetBytes(data + sharedKey);
             return hashAlgorithm.ComputeHash(input);
         }
 
