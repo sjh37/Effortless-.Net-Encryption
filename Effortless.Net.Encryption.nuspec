@@ -5,10 +5,10 @@
     <version>$version$</version>
     <authors>Simon Hughes</authors>
     <owners>Simon Hughes. http://www.hicrest.net</owners>
-    <projectUrl>https://effortlessencryption.codeplex.com/</projectUrl>
+    <projectUrl>https://github.com/sjh37/Effortless-.Net-Encryption</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <language>en-GB</language>
-    <tags>c# security password hash digest encryption</tags>
+    <tags>c# security password hash digest signature encryption</tags>
   </metadata>
 </package>
