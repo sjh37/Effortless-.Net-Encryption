@@ -57,4 +57,12 @@ new RNGCryptoServiceProvider().GetBytes(data); // Random data
 byte[] encrypted = Bytes.Encrypt(data, key, iv);
 byte[] decrypted = Bytes.Decrypt(encrypted, key, iv);
 Assert.AreEqual(data, decrypted);
+
+// Digital Signatures
+var hash = Hash.Create(HashType.SHA256, "Hello", string.Empty)
+var ds = new DigitalSignature();
+ds.AssignNewKey();
+var signature = ds.SignData(hash);
+var result = ds.VerifySignature(hash, signature);
+Assert.IsTrue(result);
 ```
