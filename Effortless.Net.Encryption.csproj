@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bytes.cs" />
+    <Compile Include="DiffieHellman.cs" />
     <Compile Include="Digest.cs" />
     <Compile Include="DigitalSignature.cs" />
     <Compile Include="Hash.cs" />
