@@ -9,7 +9,6 @@ namespace Effortless.Net.Encryption
         private readonly Aes _aes;
         private readonly ECDiffieHellmanCng _diffieHellman;
         public byte[] PublicKey { get; }
-        public byte[] IV => _aes.IV;
 
         public DiffieHellman()
         {
@@ -25,37 +24,30 @@ namespace Effortless.Net.Encryption
             PublicKey = _diffieHellman.PublicKey.ToByteArray();
         }
 
-        public byte[] Encrypt(byte[] publicKey, string secretMessage)
+        public byte[] Encrypt(DiffieHellman otherPerson, string secretMessage)
         {
-            byte[] encryptedMessage;
-            var key = CngKey.Import(publicKey, CngKeyBlobFormat.EccPublicBlob);
-            var derivedKey = _diffieHellman.DeriveKeyMaterial(key); // "Common secret"
-
-            _aes.Key = derivedKey;
+            // Common secret created by Diffie Hellman
+            _aes.Key = _diffieHellman.DeriveKeyMaterial(CngKey.Import(otherPerson.PublicKey, CngKeyBlobFormat.EccPublicBlob));
 
             using (var cipherText = new MemoryStream())
             {
                 using (var cs = new CryptoStream(cipherText, _aes.CreateEncryptor(), CryptoStreamMode.Write))
                 {
-                    var ciphertextMessage = Encoding.UTF8.GetBytes(secretMessage);
+                    var ciphertextMessage = Encoding.Unicode.GetBytes(secretMessage);
                     cs.Write(ciphertextMessage, 0, ciphertextMessage.Length);
                     cs.Close();
                 }
 
-                encryptedMessage = cipherText.ToArray();
+                return cipherText.ToArray();
             }
-
-            return encryptedMessage;
         }
 
-        public string Decrypt(byte[] publicKey, byte[] encryptedMessage, byte[] iv)
+        public string Decrypt(DiffieHellman otherPerson, byte[] encryptedMessage)
         {
-            string decryptedMessage;
-            var key = CngKey.Import(publicKey, CngKeyBlobFormat.EccPublicBlob);
-            var derivedKey = _diffieHellman.DeriveKeyMaterial(key);
-
-            _aes.Key = derivedKey;
-            _aes.IV = iv;
+            // Common secret created by Diffie Hellman
+            _aes.Key = _diffieHellman.DeriveKeyMaterial(CngKey.Import(otherPerson.PublicKey, CngKeyBlobFormat.EccPublicBlob));
+            var backupIV = _aes.IV;
+            _aes.IV = otherPerson._aes.IV;
 
             using (var plainText = new MemoryStream())
             {
@@ -65,10 +57,10 @@ namespace Effortless.Net.Encryption
                     cs.Close();
                 }
 
-                decryptedMessage = Encoding.UTF8.GetString(plainText.ToArray());
-            }
+                _aes.IV = backupIV;
 
-            return decryptedMessage;
+                return Encoding.Unicode.GetString(plainText.ToArray());
+            }
         }
     }
 }

@@ -65,4 +65,13 @@ ds.AssignNewKey();
 var signature = ds.SignData(hash);
 var result = ds.VerifySignature(hash, signature);
 Assert.IsTrue(result);
+
+// Diffie Hellman
+var alice = new DiffieHellman();
+var bob = new DiffieHellman();
+// Bob uses Alice's public key to encrypt his message.
+var secretMessage = bob.Encrypt(alice, "Hello");
+// Alice uses Bob's public key and IV to decrypt the secret message.
+var decryptedMessage = alice.Decrypt(bob, secretMessage);
+Assert.AreEqual("Hello", decryptedMessage);
 ```
