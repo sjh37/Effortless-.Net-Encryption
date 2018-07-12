@@ -29,6 +29,8 @@ namespace Effortless.Net.Encryption.Tests.Unit
         [TestFixtureSetUp]
         public void TextFixtureSetUp()
         {
+            Bytes.ResetPaddingAndCipherModes();
+
             var path = Path.GetTempPath();
             _fileEncryptedData = Path.Combine(path, "testEncrypted.txt");
             _filePlainData = Path.Combine(path, "testPlain.txt");
@@ -57,22 +59,37 @@ namespace Effortless.Net.Encryption.Tests.Unit
         }
 
         [Test]
-        public void Encrypt_32k_100_times()
+        public void Encrypt_32k_10_times_using_all_padding_and_cypher_modes()
         {
-            var key = Bytes.GenerateKey();
-            var iv = Bytes.GenerateIV();
-            var random = new Random();
-
-            for (var n = 0; n < 100; n++)
+            foreach (var paddingMode in (PaddingMode[])Enum.GetValues(typeof(PaddingMode)))
             {
-                var size = random.Next(32768) + 1;
-                var data = new byte[size];
-                Bytes.GetRandomBytes(data);
+                if (paddingMode == PaddingMode.None)
+                    continue;
 
-                var encrypted = Bytes.Encrypt(data, key, iv);
-                var decrypted = Bytes.Decrypt(encrypted, key, iv);
-                Assert.AreEqual(data, decrypted);
+                foreach (var cipherMode in (CipherMode[])Enum.GetValues(typeof(CipherMode)))
+                {
+                    if(!Bytes.SetPaddingAndCipherModes(paddingMode, cipherMode))
+                        continue; // invalid padding/cipher mode
+
+                    Console.WriteLine("Padding Mode {0} CipherMode Mode {1}", paddingMode, cipherMode);
+
+                    var key = Bytes.GenerateKey();
+                    var iv = Bytes.GenerateIV();
+                    var random = new Random();
+
+                    for (var n = 0; n < 10; n++)
+                    {
+                        var size = random.Next(32768) + 1;
+                        var data = new byte[size];
+                        Bytes.GetRandomBytes(data);
+
+                        var encrypted = Bytes.Encrypt(data, key, iv);
+                        var decrypted = Bytes.Decrypt(encrypted, key, iv);
+                        Assert.AreEqual(data, decrypted);
+                    }
+                }
             }
+            Bytes.ResetPaddingAndCipherModes();
         }
 
         [Test]

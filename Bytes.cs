@@ -34,6 +34,8 @@ namespace Effortless.Net.Encryption
     public static class Bytes
     {
         private static readonly RNGCryptoServiceProvider Rng = new RNGCryptoServiceProvider();
+        private static PaddingMode _paddingMode = PaddingMode.ISO10126;
+        private static CipherMode _cipherMode = CipherMode.CBC;
 
         public enum KeySize
         {
@@ -42,14 +44,37 @@ namespace Effortless.Net.Encryption
             Size256 = 256
         }
 
+        public static void ResetPaddingAndCipherModes()
+        {
+            _paddingMode = PaddingMode.ISO10126;
+            _cipherMode = CipherMode.CBC;
+        }
+
+        public static bool SetPaddingAndCipherModes(PaddingMode paddingMode, CipherMode cipherMode)
+        {
+            if (paddingMode == PaddingMode.PKCS7 && (cipherMode == CipherMode.OFB || cipherMode == CipherMode.CTS))
+                return false; // invalid
+            if (paddingMode == PaddingMode.Zeros)
+                return false; // invalid and/or encrypt/decrypt will mismatch
+            if (paddingMode == PaddingMode.ANSIX923 && (cipherMode == CipherMode.OFB || cipherMode == CipherMode.CTS))
+                return false; // invalid
+            if (paddingMode == PaddingMode.ISO10126 && (cipherMode == CipherMode.OFB || cipherMode == CipherMode.CTS))
+                return false; // invalid
+
+            _paddingMode = paddingMode;
+            _cipherMode = cipherMode;
+
+            return true;
+        }
+
         private static RijndaelManaged GetRijndaelManaged(byte[] key, byte[] iv)
         {
             var rm = new RijndaelManaged
             {
                 KeySize = 256,
                 BlockSize = 256,
-                Padding = PaddingMode.ISO10126,
-                Mode = CipherMode.CBC
+                Padding = _paddingMode,
+                Mode = _cipherMode
             };
 
             if (key != null)
@@ -170,8 +195,7 @@ namespace Effortless.Net.Encryption
 
                     do
                     {
-                        bytesRead = clearStreamIn.Read(buffer, 0,
-                            bufferLen); // Read a chunk of data from the input file
+                        bytesRead = clearStreamIn.Read(buffer, 0, bufferLen); // Read a chunk of data from the input file
                         if (bytesRead > 0)
                             cs.Write(buffer, 0, bytesRead); // Encrypt it
                     } while (bytesRead != 0);
