@@ -1,4 +1,9 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
+using NUnit.Framework;
 
 namespace Effortless.Net.Encryption.Tests.Unit
 {
@@ -74,6 +79,31 @@ namespace Effortless.Net.Encryption.Tests.Unit
             Assert.AreEqual(result, hash);
             Assert.IsTrue(Hash.Verify(hashType, data, string.Empty, showBytes, hash));
             Assert.IsFalse(Hash.Verify(hashType, data, "unknownKey", showBytes, hash));
+        }
+
+        [Test]
+        public void MultiThreaded()
+        {
+            var hashAlgorithm = SHA512.Create();
+            var bytes = Encoding.Default.GetBytes("Hello world");
+
+            var expected = Convert.ToBase64String(hashAlgorithm.ComputeHash(bytes));
+            Console.WriteLine("Expected");
+            Console.WriteLine(expected);
+            Console.WriteLine();
+
+            var hashLock = new object();
+            Parallel.For(0, 1000, ignored =>
+            {
+                byte[] hash;
+                lock (hashLock)
+                {
+                    // Lock only for shortest duration
+                    hash = hashAlgorithm.ComputeHash(bytes);
+                }
+                var base64 = Convert.ToBase64String(hash);
+                Assert.AreEqual(expected, base64);
+            });
         }
     }
 }
