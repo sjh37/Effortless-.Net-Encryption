@@ -109,8 +109,7 @@ namespace Effortless.Net.Encryption
 
             var hashType = (HashType) int.Parse(hashedData.Substring(0, 2));
 
-            int hashLength;
-            int.TryParse(hashedData.Substring(2, 3), out hashLength);
+            int.TryParse(hashedData.Substring(2, 3), out var hashLength);
             if (hashLength < 0)
                 return null;
 

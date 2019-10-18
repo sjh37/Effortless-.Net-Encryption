@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -102,6 +101,23 @@ namespace Effortless.Net.Encryption.Tests.Unit
                     hash = hashAlgorithm.ComputeHash(bytes);
                 }
                 var base64 = Convert.ToBase64String(hash);
+                Assert.AreEqual(expected, base64);
+            });
+        }
+
+        [Test]
+        public void MultiThreaded_v2()
+        {
+            var bytes = Encoding.Default.GetBytes("Hello world");
+
+            var expected = Convert.ToBase64String(SHA512.Create().ComputeHash(bytes));
+            Console.WriteLine("Expected");
+            Console.WriteLine(expected);
+            Console.WriteLine();
+
+            Parallel.For(0, 1000, ignored =>
+            {
+                var base64 = Convert.ToBase64String(SHA512.Create().ComputeHash(bytes));
                 Assert.AreEqual(expected, base64);
             });
         }

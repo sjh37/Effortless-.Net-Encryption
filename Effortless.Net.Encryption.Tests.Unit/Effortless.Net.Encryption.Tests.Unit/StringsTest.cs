@@ -96,9 +96,9 @@ namespace Effortless.Net.Encryption.Tests.Unit
         }
 
         [Test]
-        [TestCase(128)]
-        [TestCase(192)]
-        [TestCase(256)]
+        [TestCase(Bytes.KeySize.Size128)]
+        [TestCase(Bytes.KeySize.Size192)]
+        [TestCase(Bytes.KeySize.Size256)]
         public void Encrypt_decrypt_using_different_key_sizes(Bytes.KeySize keySize)
         {
             const string password = "Hello world";

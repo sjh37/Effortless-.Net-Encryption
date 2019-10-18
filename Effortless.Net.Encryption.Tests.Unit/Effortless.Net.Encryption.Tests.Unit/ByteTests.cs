@@ -24,7 +24,6 @@ namespace Effortless.Net.Encryption.Tests.Unit
         private byte[] _plainData;
         private string _filePlainData;
         private string _fileEncryptedData;
-        private RijndaelManaged _rijndaelManaged;
 
         [TestFixtureSetUp]
         public void TextFixtureSetUp()
@@ -35,14 +34,6 @@ namespace Effortless.Net.Encryption.Tests.Unit
             _fileEncryptedData = Path.Combine(path, "testEncrypted.txt");
             _filePlainData = Path.Combine(path, "testPlain.txt");
             _plainData = GetBytes("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla auctor, justo quis rhoncus hendrerit, lacus ligula lobortis ipsum, et semper justo lorem ut tellus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur scelerisque nisl et lacus pulvinar malesuada. In hac habitasse platea dictumst. Curabitur est metus, posuere quis pulvinar a, congue nec neque. Sed at mi vitae leo condimentum blandit. Mauris in tortor eu risus pellentesque molestie. Aliquam at leo eget erat volutpat ultricies in in purus. Quisque elit sapien, accumsan vitae sagittis ac, faucibus congue neque.");
-
-            _rijndaelManaged = new RijndaelManaged
-            {
-                KeySize = 256,
-                BlockSize = 256,
-                Padding = PaddingMode.ISO10126,
-                Mode = CipherMode.CBC
-            };
         }
 
         private static byte[] GetBytes(string str)
@@ -59,33 +50,44 @@ namespace Effortless.Net.Encryption.Tests.Unit
         }
 
         [Test]
-        public void Encrypt_32k_10_times_using_all_padding_and_cypher_modes()
+        public void Encrypt_4k_10_times_using_all_padding_and_cypher_modes()
         {
-            foreach (var paddingMode in (PaddingMode[])Enum.GetValues(typeof(PaddingMode)))
+            foreach (var paddingMode in (PaddingMode[]) Enum.GetValues(typeof(PaddingMode)))
             {
                 if (paddingMode == PaddingMode.None)
                     continue;
 
-                foreach (var cipherMode in (CipherMode[])Enum.GetValues(typeof(CipherMode)))
+                foreach (var cipherMode in (CipherMode[]) Enum.GetValues(typeof(CipherMode)))
                 {
-                    if(!Bytes.SetPaddingAndCipherModes(paddingMode, cipherMode))
+                    if (!Bytes.SetPaddingAndCipherModes(paddingMode, cipherMode))
                         continue; // invalid padding/cipher mode
 
                     Console.WriteLine("Padding Mode {0} CipherMode Mode {1}", paddingMode, cipherMode);
 
-                    var key = Bytes.GenerateKey();
-                    var iv = Bytes.GenerateIV();
-                    var random = new Random();
-
-                    for (var n = 0; n < 10; n++)
+                    foreach (var keySize in (Bytes.KeySize[]) Enum.GetValues(typeof(Bytes.KeySize)))
                     {
-                        var size = random.Next(32768) + 1;
-                        var data = new byte[size];
-                        Bytes.GetRandomBytes(data);
+                        if (keySize == Bytes.KeySize.Default)
+                            continue;
+                        foreach (var blockSize in (Bytes.BlockSize[]) Enum.GetValues(typeof(Bytes.BlockSize)))
+                        {
+                            if (blockSize == Bytes.BlockSize.Default)
+                                continue;
+                            Console.WriteLine("    KeySize {0} BlockSize {1}", keySize, blockSize);
+                            var key = Bytes.GenerateKey(keySize, blockSize);
+                            var iv = Bytes.GenerateIV(keySize, blockSize);
+                            var random = new Random();
 
-                        var encrypted = Bytes.Encrypt(data, key, iv);
-                        var decrypted = Bytes.Decrypt(encrypted, key, iv);
-                        Assert.AreEqual(data, decrypted);
+                            for (var n = 0; n < 10; n++)
+                            {
+                                var size = random.Next(4096) + 1;
+                                var data = new byte[size];
+                                Bytes.GetRandomBytes(data);
+
+                                var encrypted = Bytes.Encrypt(data, key, iv, keySize, blockSize);
+                                var decrypted = Bytes.Decrypt(encrypted, key, iv, keySize, blockSize);
+                                Assert.AreEqual(data, decrypted);
+                            }
+                        }
                     }
                 }
             }
@@ -124,28 +126,61 @@ namespace Effortless.Net.Encryption.Tests.Unit
         [Test]
         public void Encrypt_Decrypt_stream_to_file_using_own_Rijndael_algorithm()
         {
-            // Encrypt file
-            using (var fsIn = new FileStream(_filePlainData, FileMode.Open, FileAccess.Read))
+            foreach (var paddingMode in (PaddingMode[]) Enum.GetValues(typeof(PaddingMode)))
             {
-                Bytes.Encrypt(fsIn, _fileEncryptedData, _rijndaelManaged);
-            }
+                if (paddingMode == PaddingMode.None)
+                    continue;
 
-            // Decrypt file data
-            using (var memoryStream = new MemoryStream())
-            {
-                using (var fsIn = new FileStream(_fileEncryptedData, FileMode.Open, FileAccess.Read))
+                foreach (var cipherMode in (CipherMode[]) Enum.GetValues(typeof(CipherMode)))
                 {
-                    Bytes.Decrypt(fsIn, memoryStream, _rijndaelManaged);
-                }
+                    if (!Bytes.SetPaddingAndCipherModes(paddingMode, cipherMode))
+                        continue; // invalid padding/cipher mode
 
-                // Verify
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                Assert.AreEqual(_plainData.Length, memoryStream.Length);
+                    Console.WriteLine("Padding Mode {0} CipherMode Mode {1}", paddingMode, cipherMode);
+                    foreach (var keySize in (Bytes.KeySize[]) Enum.GetValues(typeof(Bytes.KeySize)))
+                    {
+                        if (keySize == Bytes.KeySize.Default)
+                            continue;
+                        foreach (var blockSize in (Bytes.BlockSize[]) Enum.GetValues(typeof(Bytes.BlockSize)))
+                        {
+                            if (blockSize == Bytes.BlockSize.Default)
+                                continue;
+                            Console.WriteLine("    KeySize {0} BlockSize {1}", keySize, blockSize);
 
-                foreach (var expected in _plainData)
-                {
-                    var b = memoryStream.ReadByte();
-                    Assert.AreEqual(expected, b);
+                            var rm = new RijndaelManaged
+                            {
+                                KeySize   = (int) keySize,
+                                BlockSize = (int) blockSize,
+                                Padding   = paddingMode,
+                                Mode      = cipherMode
+                            };
+
+                            // Encrypt file
+                            using (var fsIn = new FileStream(_filePlainData, FileMode.Open, FileAccess.Read))
+                            {
+                                Bytes.Encrypt(fsIn, _fileEncryptedData, rm);
+                            }
+
+                            // Decrypt file data
+                            using (var memoryStream = new MemoryStream())
+                            {
+                                using (var fsIn = new FileStream(_fileEncryptedData, FileMode.Open, FileAccess.Read))
+                                {
+                                    Bytes.Decrypt(fsIn, memoryStream, rm);
+                                }
+
+                                // Verify
+                                memoryStream.Seek(0, SeekOrigin.Begin);
+                                Assert.AreEqual(_plainData.Length, memoryStream.Length);
+
+                                foreach (var expected in _plainData)
+                                {
+                                    var b = memoryStream.ReadByte();
+                                    Assert.AreEqual(expected, b);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -180,15 +215,27 @@ namespace Effortless.Net.Encryption.Tests.Unit
         [Test]
         public void Generate_key_iv_encrypt_decrypt()
         {
-            var key = Bytes.GenerateKey();
-            var iv = Bytes.GenerateIV();
+            foreach (var keySize in (Bytes.KeySize[]) Enum.GetValues(typeof(Bytes.KeySize)))
+            {
+                if (keySize == Bytes.KeySize.Default)
+                    continue;
+                foreach (var blockSize in (Bytes.BlockSize[]) Enum.GetValues(typeof(Bytes.BlockSize)))
+                {
+                    if (blockSize == Bytes.BlockSize.Default)
+                        continue;
+                    Console.WriteLine("KeySize {0} BlockSize {1}", keySize, blockSize);
 
-            var data = new byte[1024];
-            Bytes.GetRandomBytes(data);
+                    var key = Bytes.GenerateKey(keySize, blockSize);
+                    var iv = Bytes.GenerateIV(keySize, blockSize);
 
-            var encrypted = Bytes.Encrypt(data, key, iv);
-            var decrypted = Bytes.Decrypt(encrypted, key, iv);
-            Assert.AreEqual(data, decrypted);
+                    var data = new byte[1024];
+                    Bytes.GetRandomBytes(data);
+
+                    var encrypted = Bytes.Encrypt(data, key, iv, keySize, blockSize);
+                    var decrypted = Bytes.Decrypt(encrypted, key, iv, keySize, blockSize);
+                    Assert.AreEqual(data, decrypted);
+                }
+            }
         }
 
         [Test]
@@ -197,15 +244,21 @@ namespace Effortless.Net.Encryption.Tests.Unit
         [TestCase(10000)]
         public void Generate_key_with_password_and_salt_iv_encrypt_decrypt_128(int iterationCount)
         {
-            var key = Bytes.GenerateKey("password", "saltsaltsalt", Bytes.KeySize.Size128, iterationCount);
-            var iv = Bytes.GenerateIV();
+            foreach (var keySize in (Bytes.KeySize[]) Enum.GetValues(typeof(Bytes.KeySize)))
+            {
+                if (keySize == Bytes.KeySize.Default)
+                    continue;
+                Console.WriteLine("KeySize {0}", keySize);
+                var key = Bytes.GenerateKey("password", "saltsaltsalt", keySize, iterationCount);
+                var iv = Bytes.GenerateIV();
 
-            var data = new byte[1024];
-            Bytes.GetRandomBytes(data);
+                var data = new byte[1024];
+                Bytes.GetRandomBytes(data);
 
-            var encrypted = Bytes.Encrypt(data, key, iv);
-            var decrypted = Bytes.Decrypt(encrypted, key, iv);
-            Assert.AreEqual(data, decrypted);
+                var encrypted = Bytes.Encrypt(data, key, iv);
+                var decrypted = Bytes.Decrypt(encrypted, key, iv);
+                Assert.AreEqual(data, decrypted);
+            }
         }
 
         [Test]
@@ -214,15 +267,21 @@ namespace Effortless.Net.Encryption.Tests.Unit
         [TestCase(10000)]
         public void Generate_key_with_password_and_salt_iv_encrypt_decrypt_192(int iterationCount)
         {
-            var key = Bytes.GenerateKey("password", "saltsaltsalt", Bytes.KeySize.Size192, iterationCount);
-            var iv = Bytes.GenerateIV();
+            foreach (var keySize in (Bytes.KeySize[]) Enum.GetValues(typeof(Bytes.KeySize)))
+            {
+                if (keySize == Bytes.KeySize.Default)
+                    continue;
+                Console.WriteLine("KeySize {0}", keySize);
+                var key = Bytes.GenerateKey("password", "saltsaltsalt", keySize, iterationCount);
+                var iv = Bytes.GenerateIV();
 
-            var data = new byte[1024];
-            Bytes.GetRandomBytes(data);
+                var data = new byte[1024];
+                Bytes.GetRandomBytes(data);
 
-            var encrypted = Bytes.Encrypt(data, key, iv);
-            var decrypted = Bytes.Decrypt(encrypted, key, iv);
-            Assert.AreEqual(data, decrypted);
+                var encrypted = Bytes.Encrypt(data, key, iv);
+                var decrypted = Bytes.Decrypt(encrypted, key, iv);
+                Assert.AreEqual(data, decrypted);
+            }
         }
 
         [Test]
@@ -231,15 +290,21 @@ namespace Effortless.Net.Encryption.Tests.Unit
         [TestCase(10000)]
         public void Generate_key_with_password_and_salt_iv_encrypt_decrypt_256(int iterationCount)
         {
-            var key = Bytes.GenerateKey("password", "saltsaltsalt", Bytes.KeySize.Size256, iterationCount);
-            var iv = Bytes.GenerateIV();
+            foreach (var keySize in (Bytes.KeySize[]) Enum.GetValues(typeof(Bytes.KeySize)))
+            {
+                if (keySize == Bytes.KeySize.Default)
+                    continue;
+                Console.WriteLine("KeySize {0}", keySize);
+                var key = Bytes.GenerateKey("password", "saltsaltsalt", keySize, iterationCount);
+                var iv = Bytes.GenerateIV();
 
-            var data = new byte[1024];
-            Bytes.GetRandomBytes(data);
+                var data = new byte[1024];
+                Bytes.GetRandomBytes(data);
 
-            var encrypted = Bytes.Encrypt(data, key, iv);
-            var decrypted = Bytes.Decrypt(encrypted, key, iv);
-            Assert.AreEqual(data, decrypted);
+                var encrypted = Bytes.Encrypt(data, key, iv);
+                var decrypted = Bytes.Decrypt(encrypted, key, iv);
+                Assert.AreEqual(data, decrypted);
+            }
         }
 
         [Test]
