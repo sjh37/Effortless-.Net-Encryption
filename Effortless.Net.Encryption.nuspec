@@ -6,6 +6,7 @@
     <authors>Simon Hughes</authors>
     <owners>Simon Hughes. http://www.hicrest.net</owners>
     <projectUrl>https://github.com/sjh37/Effortless-.Net-Encryption</projectUrl>
+    <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <language>en-GB</language>
