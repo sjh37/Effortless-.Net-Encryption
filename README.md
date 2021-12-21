@@ -8,6 +8,9 @@ Effortless .Net Encryption is a library that is written in C# and provides:
 *   Hashing and Digest creation/validation.
 *   Password and salt creation.
 
+### Give a Star! :star:
+If you like or are using this project please give it a star. Thanks!
+
 ### Nuget
 
 [https://nuget.org/packages/Effortless.Net.Encryption/](https://nuget.org/packages/Effortless.Net.Encryption/ "https://nuget.org/packages/Effortless.Net.Encryption/")
