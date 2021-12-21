@@ -8,8 +8,8 @@ namespace Effortless.Net.Encryption.Tests.Unit
     {
         private byte[] _hash;
 
-        [TestFixtureSetUp]
-        public void SetUp()
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
         {
             _hash = Hash.Create(HashType.SHA256, "Hello world", string.Empty);
         }

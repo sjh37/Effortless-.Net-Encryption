@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32002.261
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Effortless.Net.Encryption.Tests.Unit", "Effortless.Net.Encryption.Tests.Unit\Effortless.Net.Encryption.Tests.Unit\Effortless.Net.Encryption.Tests.Unit.csproj", "{1942BD07-7044-4BC4-BA0B-4F88DF529C5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Effortless.Net.Encryption", "Effortless.Net.Encryption\Effortless.Net.Encryption.csproj", "{ECADC722-EE08-401F-BF42-368F79ED4DEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Effortless.Net.Encryption", "Effortless.Net.Encryption.csproj", "{ECADC722-EE08-401F-BF42-368F79ED4DEF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Effortless.Net.Encryption.Tests.Unit", "Effortless.Net.Encryption.Tests.Unit\Effortless.Net.Encryption.Tests.Unit.csproj", "{343F0FF0-57FD-48DC-A474-BA2C94F501C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,16 +13,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1942BD07-7044-4BC4-BA0B-4F88DF529C5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1942BD07-7044-4BC4-BA0B-4F88DF529C5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1942BD07-7044-4BC4-BA0B-4F88DF529C5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1942BD07-7044-4BC4-BA0B-4F88DF529C5B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ECADC722-EE08-401F-BF42-368F79ED4DEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ECADC722-EE08-401F-BF42-368F79ED4DEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECADC722-EE08-401F-BF42-368F79ED4DEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECADC722-EE08-401F-BF42-368F79ED4DEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{343F0FF0-57FD-48DC-A474-BA2C94F501C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{343F0FF0-57FD-48DC-A474-BA2C94F501C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{343F0FF0-57FD-48DC-A474-BA2C94F501C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{343F0FF0-57FD-48DC-A474-BA2C94F501C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {49403A72-5EE3-41F5-B9DA-3539BA078277}
 	EndGlobalSection
 EndGlobal
