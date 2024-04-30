@@ -1,48 +1,48 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
-namespace Effortless.Net.Encryption.Tests.Unit
+namespace Effortless.Net.Encryption.Tests.Unit;
+
+[TestFixture]
+public class DiffieHellmanTests
 {
-    [TestFixture]
-    public class DiffieHellmanTests
+    [Test]
+    public void Encrypt_Decrypt()
     {
-        [Test]
-        public void Encrypt_Decrypt()
-        {
-            const string text = "Hello World!";
+        const string text = "Hello World!";
 
-            var alice = new DiffieHellman();
-            var bob = new DiffieHellman();
+        var alice = new DiffieHellman();
+        var bob = new DiffieHellman();
 
-            // Bob uses Alice's public key to encrypt his message.
-            var secretMessage = bob.Encrypt(alice, text);
+        // Bob uses Alice's public key to encrypt his message.
+        var secretMessage = bob.Encrypt(alice, text);
 
-            // Alice uses Bob's public key and IV to decrypt the secret message.
-            var decryptedMessage = alice.Decrypt(bob, secretMessage);
-            Assert.AreEqual(text, decryptedMessage);
-        }
+        // Alice uses Bob's public key and IV to decrypt the secret message.
+        var decryptedMessage = alice.Decrypt(bob, secretMessage);
+        ClassicAssert.AreEqual(text, decryptedMessage);
+    }
 
-        [Test]
-        public void MultipleTests()
-        {
-            const string text = "Hello World!";
+    [Test]
+    public void MultipleTests()
+    {
+        const string text = "Hello World!";
 
-            var alice = new DiffieHellman();
-            var bob = new DiffieHellman();
+        var alice = new DiffieHellman();
+        var bob = new DiffieHellman();
 
-            var secretMessageA = alice.Encrypt(bob, text);
-            var secretMessage1 = bob.Encrypt(alice, text);
-            var decryptedMessage = alice.Decrypt(bob, secretMessage1);
-            var secretMessageB = alice.Encrypt(bob, text);
-            Assert.AreEqual(text, decryptedMessage);
-            Assert.AreEqual(secretMessageA, secretMessageB);
+        var secretMessageA = alice.Encrypt(bob, text);
+        var secretMessage1 = bob.Encrypt(alice, text);
+        var decryptedMessage = alice.Decrypt(bob, secretMessage1);
+        var secretMessageB = alice.Encrypt(bob, text);
+        ClassicAssert.AreEqual(text, decryptedMessage);
+        ClassicAssert.AreEqual(secretMessageA, secretMessageB);
 
-            // See if its repeatable due to IV being replaced by previous decryption
-            var secretMessage2 = bob.Encrypt(alice, text);
-            decryptedMessage = alice.Decrypt(bob, secretMessage2);
-            Assert.AreEqual(text, decryptedMessage);
+        // See if its repeatable due to IV being replaced by previous decryption
+        var secretMessage2 = bob.Encrypt(alice, text);
+        decryptedMessage = alice.Decrypt(bob, secretMessage2);
+        ClassicAssert.AreEqual(text, decryptedMessage);
 
-            // Should be the same if nothing has changed
-            Assert.AreEqual(secretMessage1, secretMessage2);
-        }
+        // Should be the same if nothing has changed
+        ClassicAssert.AreEqual(secretMessage1, secretMessage2);
     }
 }

@@ -1,11 +1,11 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32002.261
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Effortless.Net.Encryption", "Effortless.Net.Encryption\Effortless.Net.Encryption.csproj", "{ECADC722-EE08-401F-BF42-368F79ED4DEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Effortless.Net.Encryption.Tests.Unit", "Effortless.Net.Encryption.Tests.Unit\Effortless.Net.Encryption.Tests.Unit.csproj", "{343F0FF0-57FD-48DC-A474-BA2C94F501C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Effortless.Net.Encryption.Tests.Unit", "Effortless.Net.Encryption.Tests.Unit\Effortless.Net.Encryption.Tests.Unit.csproj", "{343F0FF0-57FD-48DC-A474-BA2C94F501C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

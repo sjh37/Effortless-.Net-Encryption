@@ -127,6 +127,7 @@ namespace Effortless.Net.Encryption
         ///     The numBytes is the number of non zero random bytes that will converted into a base-64 string.
         ///     The resulting string length can be larger than numBytes.
         /// </param>
+        /// <exception cref="ArgumentException">numBytes must be greater than zero</exception>
         /// <returns>A salt</returns>
         public static string CreateSaltFull(int numBytes)
         {
@@ -143,13 +144,14 @@ namespace Effortless.Net.Encryption
         ///     Under the hood, it calls CreateSaltFull() and trims the string to the required length.
         /// </summary>
         /// <param name="numChars">The number of characters required in the salt</param>
+        /// <exception cref="ArgumentException">numChars must be greater than zero</exception>
         /// <returns>A salt</returns>
         public static string CreateSalt(int numChars)
         {
             if (numChars < 1)
                 throw new ArgumentException(nameof(numChars));
 
-            return CreateSaltFull(numChars).Substring(0, numChars);
+            return CreateSaltFull(numChars)[..numChars];
         }
 
         /// <summary>
@@ -159,6 +161,7 @@ namespace Effortless.Net.Encryption
         /// </summary>
         /// <param name="size">The number of characters in the returned password</param>
         /// <param name="allowPunctuation">If true allows letters, digits and puctuation. If false only allows letters and digits.</param>
+        /// <exception cref="ArgumentException">size must be greater than zero</exception>
         /// <returns>Password</returns>
         public static string CreatePassword(int size, bool allowPunctuation)
         {
